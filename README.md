@@ -36,6 +36,10 @@ This repository does not include the raw Tesla 3D models due to size and licensi
    ```
 5. Convert the patched OBJ to native Qt meshes using `balsam`:
    ```bash
+   # For Model S
+   /usr/lib64/qt6/bin/balsam -o qml/meshes/ModelS assets/ModelS_patched.obj
+   
+   # For Cybertruck
    /usr/lib64/qt6/bin/balsam -o qml/meshes/Cybertruck assets/Cybertruck_patched.obj
    ```
 
