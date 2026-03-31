@@ -30,8 +30,14 @@ Node {
         // Skipped property: source, reason: Failed to find texture at /home/jreznik/gemini/tesla-lightshow-visualizer/assets/Cybertruck_Premium_Wheel_AO_Dark.png
     }
     PrincipledMaterial {
-        id: ct_Frunk_Mtl_material
-        objectName: "CT_Frunk_Mtl"
+        id: ct_Mirror_R_Mtl_material
+        objectName: "CT_Mirror_R_Mtl"
+        baseColor: "#ff999999"
+        indexOfRefraction: 1
+    }
+    PrincipledMaterial {
+        id: ct_Mirror_L_Mtl_material
+        objectName: "CT_Mirror_L_Mtl"
         baseColor: "#ff999999"
         indexOfRefraction: 1
     }
@@ -157,11 +163,13 @@ Node {
                 blinn3SG_material,
                 lambert2SG_material,
                 blinn3SG_material,
-                blinn3SG_material,
                 lambert2SG_material,
                 blinn3SG_material,
                 lambert2SG_material,
                 blinn3SG_material,
+                lambert2SG_material,
+                blinn3SG_material,
+                lambert2SG_material,
                 blinn3SG_material,
                 lambert2SG_material,
                 blinn3SG_material,
@@ -380,11 +388,19 @@ Node {
             ]
         }
         Model {
-            id: ct_Frunk
-            objectName: "CT_Frunk"
-            source: "meshes/ct_Frunk_mesh.mesh"
+            id: ct_Mirror_L
+            objectName: "CT_Mirror_L"
+            source: "meshes/ct_Mirror_L_mesh.mesh"
             materials: [
-                ct_Frunk_Mtl_material
+                ct_Mirror_L_Mtl_material
+            ]
+        }
+        Model {
+            id: ct_Mirror_R
+            objectName: "CT_Mirror_R"
+            source: "meshes/ct_Mirror_R_mesh.mesh"
+            materials: [
+                ct_Mirror_R_Mtl_material
             ]
         }
     }

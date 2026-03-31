@@ -49,7 +49,8 @@
         <file alias="cars/Cybertruck/meshes/wheels_mesh.mesh">qml/cars/Cybertruck/meshes/wheels_mesh.mesh</file>
         <file alias="cars/Cybertruck/meshes/windows_mesh.mesh">qml/cars/Cybertruck/meshes/windows_mesh.mesh</file>
         <file alias="cars/Cybertruck/meshes/lights_mesh.mesh">qml/cars/Cybertruck/meshes/lights_mesh.mesh</file>
-        <file alias="cars/Cybertruck/meshes/ct_Frunk_mesh.mesh">qml/cars/Cybertruck/meshes/ct_Frunk_mesh.mesh</file>
+        <file alias="cars/Cybertruck/meshes/ct_Mirror_L_mesh.mesh">qml/cars/Cybertruck/meshes/ct_Mirror_L_mesh.mesh</file>
+        <file alias="cars/Cybertruck/meshes/ct_Mirror_R_mesh.mesh">qml/cars/Cybertruck/meshes/ct_Mirror_R_mesh.mesh</file>
         <file alias="cars/Cybertruck/meshes/ct_Front_Bar_mesh.mesh">qml/cars/Cybertruck/meshes/ct_Front_Bar_mesh.mesh</file>
         <file alias="cars/Cybertruck/meshes/ct_Main_Beams_mesh.mesh">qml/cars/Cybertruck/meshes/ct_Main_Beams_mesh.mesh</file>
         <file alias="cars/Cybertruck/meshes/ct_Offroad_Bar_mesh.mesh">qml/cars/Cybertruck/meshes/ct_Offroad_Bar_mesh.mesh</file>

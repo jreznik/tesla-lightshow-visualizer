@@ -43,17 +43,24 @@ def get_ct_segment(face_line, mtl):
     # lambert2SG: Exterior_AO_Dark.png (Main Body)
     
     if mtl == 'blinn5SG':
+        # Mirrors are small parts on the sides of the front
+        # They seem to be around X=100 in this model
+        if 80 < ax < 120 and ay > 110:
+            if az < -95: return "CT_Mirror_L"
+            if az > 95: return "CT_Mirror_R"
         if ay > 120: return "CT_Offroad_Bar"
         if az > 80 or az < -80: return "CT_Main_Beams"
         return "CT_Front_Bar"
     elif mtl == 'blinn6SG':
         return "CT_Rear_Bar"
-    elif mtl == 'lambert2SG':
-        # Frunk area is front-top: X > 150, Y > 80, Z between -100 and 100
-        if ax > 150 and ay > 80 and -100 < az < 100:
-            return "CT_Frunk"
-    
-    return None
+    elif mtl == 'blinn3SG':
+        # Mirrors are located around X=200-235, Y=105-125, Z=abs(90-100)
+        if 190 < ax < 240 and 100 < ay < 130:
+            if az < -80: return "CT_Mirror_L"
+            if az > 80: return "CT_Mirror_R"
+        return None
+    elif mtl == 'phong1SG':
+        return None
 
 face_buckets = {}
 current_mtl = None

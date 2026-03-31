@@ -159,6 +159,7 @@ Window {
             if (key === Qt.Key_Z) return 22; if (key === Qt.Key_X) return 23; if (key === Qt.Key_G) return 24; if (key === Qt.Key_H) return 25
             if (key === Qt.Key_J) return 26; if (key === Qt.Key_K) return 27; if (key === Qt.Key_L) return 41; // Liftgate
             if (key === Qt.Key_Semicolon) return 29
+
             if (key === Qt.Key_C) return 30; if (key === Qt.Key_V) return 31; if (key === Qt.Key_B) return 32; if (key === Qt.Key_N) return 33
             if (key === Qt.Key_M) return 34; if (key === Qt.Key_Comma) return 35; // Left Mirror
             if (key === Qt.Key_Period) return 36; // Right Mirror

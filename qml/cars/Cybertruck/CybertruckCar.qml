@@ -127,15 +127,26 @@ Node {
             Model { source: "meshes/ct_Rear_Bar_mesh.mesh"; materials: [ mat_Rear_Bar ]; castsShadows: true }
 
             // --- ANIMATED PARTS ---
-            // Powered Frunk (Channel 41)
+            // Folding Mirrors (Channels 35 Left, 36 Right)
             Node {
-                id: frunkNode
-                position: Qt.vector3d(150, 130, 0) // Pivot at top hinge
-                eulerRotation: Qt.vector3d(0, 0, getVal(41) * -50)
+                id: mirrorLNode
+                position: Qt.vector3d(215, 120, -90) // Pivot at door attachment
+                eulerRotation: Qt.vector3d(0, getVal(35) * 15, 0)
                 Model {
-                    source: "meshes/ct_Frunk_mesh.mesh"
-                    position: Qt.vector3d(-150, -130, 0) // Re-center
-                    materials: [ mat_Body ]
+                    source: "meshes/ct_Mirror_L_mesh.mesh"
+                    position: Qt.vector3d(-215, -120, 90) // Re-center
+                    materials: [ mat_Glass ] // Using glass material
+                    castsShadows: true
+                }
+            }
+            Node {
+                id: mirrorRNode
+                position: Qt.vector3d(215, 120, 90) // Pivot at door attachment
+                eulerRotation: Qt.vector3d(0, getVal(36) * -15, 0)
+                Model {
+                    source: "meshes/ct_Mirror_R_mesh.mesh"
+                    position: Qt.vector3d(-215, -120, -90) // Re-center
+                    materials: [ mat_Glass ]
                     castsShadows: true
                 }
             }
@@ -196,9 +207,8 @@ Node {
         { ch: 27, pos: Qt.vector3d(-260, 60, 0), c: "white" }, // Reverse
         { ch: 28, pos: Qt.vector3d(-260, 50, 0), c: "red" }, // Rear Fog
         { ch: 29, pos: Qt.vector3d(-260, 40, 0), c: "white" }, // License
-        { ch: 35, pos: Qt.vector3d(100, 130, -110), c: "white" }, // L Mirror (approx)
-        { ch: 36, pos: Qt.vector3d(100, 130, 110), c: "white" },  // R Mirror (approx)
-        { ch: 41, pos: Qt.vector3d(150, 130, 0), c: "white" }    // Frunk Hinge
+        { ch: 35, pos: Qt.vector3d(215, 120, -90), c: "white" }, // L Mirror
+        { ch: 36, pos: Qt.vector3d(215, 120, 90), c: "white" }   // R Mirror
     ]
 
 
