@@ -11,5 +11,5 @@ CustomMaterial {
     property real reflectivity: 0.5
 
     shadingMode: CustomMaterial.Shaded
-    fragmentShader: "brushed_steel.frag"
+    fragmentShader: "qrc:/qt/qml/tesla-lightshow-visualizer/shaders/brushed_steel.frag"
 }
