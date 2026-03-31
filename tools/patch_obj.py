@@ -6,11 +6,11 @@ import os
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 obj_path = os.path.join(base_dir, "assets/ModelS_patched.obj")
 mtl_path = os.path.join(base_dir, "assets/ModelS_patched.mtl")
-src_path = os.path.join(base_dir, "source_assets/ModelS.obj")
+src_path = os.path.join(base_dir, "assets/ModelS.obj")
 
 if not os.path.exists(src_path):
     print(f"Error: Source asset not found at {src_path}")
-    print("Please download the Tesla Model S xLights assets and place ModelS.obj in the source_assets folder.")
+    print("Please download the Tesla Model S xLights assets and place ModelS.obj in the assets folder.")
     sys.exit(1)
 
 # 1. Restore original

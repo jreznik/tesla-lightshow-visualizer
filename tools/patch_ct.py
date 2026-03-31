@@ -5,7 +5,7 @@ import os
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 obj_path = os.path.join(base_dir, "assets/Cybertruck_patched.obj")
 mtl_path = os.path.join(base_dir, "assets/Cybertruck_patched.mtl")
-src_path = os.path.join(base_dir, "source_assets/Cybertruck/Cybertruck.obj")
+src_path = os.path.join(base_dir, "assets/Cybertruck.obj")
 
 if not os.path.exists(src_path):
     print(f"Error: Source asset not found at {src_path}")

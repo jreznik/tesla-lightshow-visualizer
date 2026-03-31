@@ -110,39 +110,39 @@ Node {
         id: geometryCorrection
         position: Qt.vector3d(-10.7, 1.57, 0)
 
-        Model { id: bodyModel; source: "meshes/ModelS/body_mesh.mesh"; materials: [ mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red ] }
-        Model { id: wheelsModel; source: "meshes/ModelS/wheels_mesh.mesh"; materials: [ mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel ] }
-        Model { id: topGlassModel; source: "meshes/ModelS/windows_Top_mesh.mesh"; materials: [ mat_Glass ] }
+        Model { id: bodyModel; source: "meshes/body_mesh.mesh"; materials: [ mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red ] }
+        Model { id: wheelsModel; source: "meshes/wheels_mesh.mesh"; materials: [ mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel ] }
+        Model { id: topGlassModel; source: "meshes/windows_Top_mesh.mesh"; materials: [ mat_Glass ] }
         
-        Model { source: "meshes/ModelS/front_Outer_L_mesh.mesh"; materials: [ mat_L_Outer ] }
-        Model { source: "meshes/ModelS/front_Outer_R_mesh.mesh"; materials: [ mat_R_Outer ] }
-        Model { source: "meshes/ModelS/front_Inner_L_mesh.mesh"; materials: [ mat_L_Inner ] }
-        Model { source: "meshes/ModelS/front_Inner_R_mesh.mesh"; materials: [ mat_R_Inner ] }
-        Model { source: "meshes/ModelS/front_Sig_L_mesh.mesh"; materials: [ mat_L_Sig ] }
-        Model { source: "meshes/ModelS/front_Sig_R_mesh.mesh"; materials: [ mat_R_Sig ] }
-        Model { source: "meshes/ModelS/front_Turn_L_mesh.mesh"; materials: [ mat_L_Turn ] }
-        Model { source: "meshes/ModelS/front_Turn_R_mesh.mesh"; materials: [ mat_R_Turn ] }
-        Model { source: "meshes/ModelS/front_Fog_L_mesh.mesh"; materials: [ mat_L_Fog ] }
-        Model { source: "meshes/ModelS/front_Fog_R_mesh.mesh"; materials: [ mat_R_Fog ] }
-        Model { source: "meshes/ModelS/rear_Tail_L_mesh.mesh"; materials: [ mat_Rear_Tail ] }
-        Model { source: "meshes/ModelS/rear_Tail_R_mesh.mesh"; materials: [ mat_Rear_Tail ] }
-        Model { source: "meshes/ModelS/rear_Brake_L_mesh.mesh"; materials: [ mat_Rear_Brake ] }
-        Model { source: "meshes/ModelS/rear_Brake_R_mesh.mesh"; materials: [ mat_Rear_Brake ] }
-        Model { id: doorLFModel; source: "meshes/ModelS/door_LF_mesh.mesh"; materials: [ mat_Glass, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
-        Model { id: doorRFModel; source: "meshes/ModelS/door_RF_mesh.mesh"; materials: [ mat_Glass, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red ] }
-        Model { id: doorLRModel; source: "meshes/ModelS/door_LR_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
-        Model { id: doorRRModel; source: "meshes/ModelS/door_RR_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, Math.max(getVal(22),getVal(23))*10, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
-        Model { id: hoodModel; source: "meshes/ModelS/hood_mesh.mesh"; materials: [ mat_Red ] }
-        Model { id: trunkModel; source: "meshes/ModelS/trunk_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red ] }
-        Model { id: spoilerModel; source: "meshes/ModelS/spoiler_mesh.mesh"; materials: [ mat_Black ] }
-        Model { id: windowLFModel; source: "meshes/ModelS/window_LF_mesh.mesh"; materials: [ mat_Glass ] }
-        Model { id: windowRFModel; source: "meshes/ModelS/window_RF_mesh.mesh"; materials: [ mat_Glass ] }
-        Model { id: windowLRModel; source: "meshes/ModelS/window_LR_mesh.mesh"; materials: [ mat_Glass ] }
-        Model { id: windowRRModel; source: "meshes/ModelS/window_RR_mesh.mesh"; materials: [ mat_Glass ] }
-        Model { id: chargeCapModel; source: "meshes/ModelS/charge_Cap_mesh.mesh"; materials: [ mat_Red ] }
+        Model { source: "meshes/front_Outer_L_mesh.mesh"; materials: [ mat_L_Outer ] }
+        Model { source: "meshes/front_Outer_R_mesh.mesh"; materials: [ mat_R_Outer ] }
+        Model { source: "meshes/front_Inner_L_mesh.mesh"; materials: [ mat_L_Inner ] }
+        Model { source: "meshes/front_Inner_R_mesh.mesh"; materials: [ mat_R_Inner ] }
+        Model { source: "meshes/front_Sig_L_mesh.mesh"; materials: [ mat_L_Sig ] }
+        Model { source: "meshes/front_Sig_R_mesh.mesh"; materials: [ mat_R_Sig ] }
+        Model { source: "meshes/front_Turn_L_mesh.mesh"; materials: [ mat_L_Turn ] }
+        Model { source: "meshes/front_Turn_R_mesh.mesh"; materials: [ mat_R_Turn ] }
+        Model { source: "meshes/front_Fog_L_mesh.mesh"; materials: [ mat_L_Fog ] }
+        Model { source: "meshes/front_Fog_R_mesh.mesh"; materials: [ mat_R_Fog ] }
+        Model { source: "meshes/rear_Tail_L_mesh.mesh"; materials: [ mat_Rear_Tail ] }
+        Model { source: "meshes/rear_Tail_R_mesh.mesh"; materials: [ mat_Rear_Tail ] }
+        Model { source: "meshes/rear_Brake_L_mesh.mesh"; materials: [ mat_Rear_Brake ] }
+        Model { source: "meshes/rear_Brake_R_mesh.mesh"; materials: [ mat_Rear_Brake ] }
+        Model { id: doorLFModel; source: "meshes/door_LF_mesh.mesh"; materials: [ mat_Glass, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
+        Model { id: doorRFModel; source: "meshes/door_RF_mesh.mesh"; materials: [ mat_Glass, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red ] }
+        Model { id: doorLRModel; source: "meshes/door_LR_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
+        Model { id: doorRRModel; source: "meshes/door_RR_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, Math.max(getVal(22),getVal(23))*10, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
+        Model { id: hoodModel; source: "meshes/hood_mesh.mesh"; materials: [ mat_Red ] }
+        Model { id: trunkModel; source: "meshes/trunk_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red ] }
+        Model { id: spoilerModel; source: "meshes/spoiler_mesh.mesh"; materials: [ mat_Black ] }
+        Model { id: windowLFModel; source: "meshes/window_LF_mesh.mesh"; materials: [ mat_Glass ] }
+        Model { id: windowRFModel; source: "meshes/window_RF_mesh.mesh"; materials: [ mat_Glass ] }
+        Model { id: windowLRModel; source: "meshes/window_LR_mesh.mesh"; materials: [ mat_Glass ] }
+        Model { id: windowRRModel; source: "meshes/window_RR_mesh.mesh"; materials: [ mat_Glass ] }
+        Model { id: chargeCapModel; source: "meshes/charge_Cap_mesh.mesh"; materials: [ mat_Red ] }
         
-        Model { id: physicalRepeaterL; source: "meshes/ModelS/side_Repeater_L_mesh.mesh"; materials: [ mat_L_Repeat ] }
-        Model { id: physicalRepeaterR; source: "meshes/ModelS/side_Repeater_R_mesh.mesh"; materials: [ mat_R_Repeat ] }
+        Model { id: physicalRepeaterL; source: "meshes/side_Repeater_L_mesh.mesh"; materials: [ mat_L_Repeat ] }
+        Model { id: physicalRepeaterR; source: "meshes/side_Repeater_R_mesh.mesh"; materials: [ mat_R_Repeat ] }
 
         Loader { sourceComponent: beamComponent; x: 482; y: 120; z: -180; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(0) }); item.length = 150; item.col = "white" } } 
         Loader { sourceComponent: beamComponent; x: 482; y: 120; z: 180; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(1) }); item.length = 150; item.col = "white" } } 

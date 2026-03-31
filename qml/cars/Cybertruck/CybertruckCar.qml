@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick3D
+import "../../shaders"
 
 Node {
     id: carRoot
@@ -115,14 +116,14 @@ Node {
             id: geometryCorrection
             position: Qt.vector3d(0, 0.54, 0) // Shift bottom to 0
 
-            Model { source: "meshes/Cybertruck/body_mesh.mesh"; materials: [ mat_Body ] }
-            Model { source: "meshes/Cybertruck/wheels_mesh.mesh"; materials: [ mat_Wheel ] }
-            Model { source: "meshes/Cybertruck/windows_mesh.mesh"; materials: [ mat_Glass ] }
-            Model { source: "meshes/Cybertruck/lights_mesh.mesh"; materials: [ mat_Black ] }
-            Model { source: "meshes/Cybertruck/ct_Front_Bar_mesh.mesh"; materials: [ mat_Front_Bar ] }
-            Model { source: "meshes/Cybertruck/ct_Main_Beams_mesh.mesh"; materials: [ mat_Main_Beam ] }
-            Model { source: "meshes/Cybertruck/ct_Offroad_Bar_mesh.mesh"; materials: [ mat_Offroad_Bar ] }
-            Model { source: "meshes/Cybertruck/ct_Rear_Bar_mesh.mesh"; materials: [ mat_Rear_Bar ] }
+            Model { source: "meshes/body_mesh.mesh"; materials: [ mat_Body ] }
+            Model { source: "meshes/wheels_mesh.mesh"; materials: [ mat_Wheel ] }
+            Model { source: "meshes/windows_mesh.mesh"; materials: [ mat_Glass ] }
+            Model { source: "meshes/lights_mesh.mesh"; materials: [ mat_Black ] }
+            Model { source: "meshes/ct_Front_Bar_mesh.mesh"; materials: [ mat_Front_Bar ] }
+            Model { source: "meshes/ct_Main_Beams_mesh.mesh"; materials: [ mat_Main_Beam ] }
+            Model { source: "meshes/ct_Offroad_Bar_mesh.mesh"; materials: [ mat_Offroad_Bar ] }
+            Model { source: "meshes/ct_Rear_Bar_mesh.mesh"; materials: [ mat_Rear_Bar ] }
 
             // --- Front Light Effects ---
             // Main Beam (Channel 0/1)

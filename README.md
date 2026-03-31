@@ -24,9 +24,8 @@ A high-fidelity 3D visualizer for custom Tesla Lightshows (`.fseq` files). Built
 ### 2. Setup Assets
 This repository does not include the raw Tesla 3D models due to size and licensing. You must download them separately:
 1. Download the **Tesla Model S or Cybertruck xLights model** from the community (e.g., from the official [Tesla xLights repository](https://github.com/teslamotors/light-show)).
-2. Create a folder named `source_assets` in the project root.
-3. Place your `.obj` and `.mtl` files into `source_assets/` (e.g., `source_assets/ModelS.obj` or `source_assets/Cybertruck/Cybertruck.obj`).
-4. Run the appropriate patching tool to segment the lights:
+2. Place your `.obj` and `.mtl` files into the `assets/` folder (e.g., `assets/ModelS.obj` or `assets/Cybertruck.obj`).
+3. Run the appropriate patching tool to segment the lights:
    ```bash
    # For Model S
    python3 tools/patch_obj.py
@@ -34,14 +33,15 @@ This repository does not include the raw Tesla 3D models due to size and licensi
    # For Cybertruck
    python3 tools/patch_ct.py
    ```
-5. Convert the patched OBJ to native Qt meshes using `balsam`:
+4. Convert the patched OBJ to native Qt meshes using `balsam`:
    ```bash
    # For Model S
-   /usr/lib64/qt6/bin/balsam -o qml/meshes/ModelS assets/ModelS_patched.obj
+   /usr/lib64/qt6/bin/balsam -o qml/cars/ModelS/assets assets/ModelS_patched.obj
    
    # For Cybertruck
-   /usr/lib64/qt6/bin/balsam -o qml/meshes/Cybertruck assets/Cybertruck_patched.obj
+   /usr/lib64/qt6/bin/balsam -o qml/cars/Cybertruck/assets assets/Cybertruck_patched.obj
    ```
+   *Note: Move the produced `.mesh` files into the respective `meshes/` folder for each car.*
 
 ### 3. Build
 ```bash

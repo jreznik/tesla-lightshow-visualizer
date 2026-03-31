@@ -5,6 +5,8 @@ import QtQuick3D.Helpers
 import QtQuick.Dialogs
 import QtCore
 import Tesla.Lightshow
+import "cars/ModelS"
+import "cars/Cybertruck"
 
 Window {
     id: window
