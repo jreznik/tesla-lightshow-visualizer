@@ -48,6 +48,7 @@ Window {
             let audioPathMp3 = fseqPath.replace(".fseq", ".mp3")
             if (sync.loadShow(fseqPath, audioPathWav) || sync.loadShow(fseqPath, audioPathMp3)) {
                 sync.position = 0
+                sync.play()
             } else {
                 errorMessage = "FAILED TO LOAD LIGHTSHOW. ENSURE THE .FSEQ FILE IS VALID AND A MATCHING .MP3/.WAV EXISTS."
                 errorDialog.open()
