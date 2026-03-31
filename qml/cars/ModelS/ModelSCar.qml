@@ -165,8 +165,15 @@ Node {
     readonly property var markerModel: [
         { ch: 0, pos: Qt.vector3d(500, 120, -180), c: "white" }, { ch: 1, pos: Qt.vector3d(500, 120, 180), c: "white" },
         { ch: 2, pos: Qt.vector3d(490, 120, -140), c: "white" }, { ch: 3, pos: Qt.vector3d(490, 120, 140), c: "white" },
+        { ch: 4, pos: Qt.vector3d(480, 140, -160), c: "white" }, { ch: 5, pos: Qt.vector3d(480, 140, 160), c: "white" },
         { ch: 12, pos: Qt.vector3d(480, 150, -210), c: "orange" }, { ch: 13, pos: Qt.vector3d(480, 150, 210), c: "orange" },
-        { ch: 24, pos: Qt.vector3d(-500, 160, 0), c: "red" }
+        { ch: 14, pos: Qt.vector3d(480, 80, -180), c: "white" }, { ch: 15, pos: Qt.vector3d(480, 80, 180), c: "white" },
+        { ch: 20, pos: Qt.vector3d(255, 155, -195), c: "orange" }, { ch: 21, pos: Qt.vector3d(255, 155, 195), c: "orange" },
+        { ch: 22, pos: Qt.vector3d(-480, 150, -180), c: "orange" }, { ch: 23, pos: Qt.vector3d(-480, 150, 180), c: "orange" },
+        { ch: 24, pos: Qt.vector3d(-500, 160, 0), c: "red" },
+        { ch: 25, pos: Qt.vector3d(-480, 180, -150), c: "red" }, { ch: 26, pos: Qt.vector3d(-480, 180, 150), c: "red" },
+        { ch: 27, pos: Qt.vector3d(-480, 140, 0), c: "white" },
+        { ch: 28, pos: Qt.vector3d(-480, 130, 0), c: "red" }
     ]
 
     Node {

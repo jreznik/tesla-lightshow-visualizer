@@ -160,14 +160,30 @@ Node {
     }
 
     readonly property var markerModel: [
-        { ch: 0, pos: Qt.vector3d(280, 100, -110), c: "white" },
-        { ch: 1, pos: Qt.vector3d(280, 100, 110), c: "white" },
-        { ch: 6, pos: Qt.vector3d(100, 180, 0), c: "white" },
-        { ch: 12, pos: Qt.vector3d(285, 100, -130), c: "orange" },
-        { ch: 13, pos: Qt.vector3d(285, 100, 130), c: "orange" },
-        { ch: 24, pos: Qt.vector3d(-265, 68, 0), c: "red" },
-        { ch: 27, pos: Qt.vector3d(-260, 68, 0), c: "white" }
+        // Front Beams
+        { ch: 0, pos: Qt.vector3d(280, 100, -110), c: "white" }, { ch: 1, pos: Qt.vector3d(280, 100, 110), c: "white" },
+        { ch: 2, pos: Qt.vector3d(280, 100, -80), c: "white" }, { ch: 3, pos: Qt.vector3d(280, 100, 80), c: "white" },
+        // Front Signature Bar Segments
+        { ch: 4, pos: Qt.vector3d(280, 115, -60), c: "white" }, { ch: 5, pos: Qt.vector3d(280, 115, 60), c: "white" },
+        { ch: 6, pos: Qt.vector3d(280, 115, -40), c: "white" }, { ch: 7, pos: Qt.vector3d(280, 115, 40), c: "white" },
+        { ch: 8, pos: Qt.vector3d(280, 115, -20), c: "white" }, { ch: 9, pos: Qt.vector3d(280, 115, 20), c: "white" },
+        { ch: 10, pos: Qt.vector3d(280, 115, -5), c: "white" }, { ch: 11, pos: Qt.vector3d(280, 115, 5), c: "white" },
+        // Turn / Fog / Park
+        { ch: 12, pos: Qt.vector3d(285, 105, -130), c: "orange" }, { ch: 13, pos: Qt.vector3d(285, 105, 130), c: "orange" },
+        { ch: 14, pos: Qt.vector3d(280, 70, -100), c: "white" }, { ch: 15, pos: Qt.vector3d(280, 70, 100), c: "white" },
+        { ch: 16, pos: Qt.vector3d(200, 110, 0), c: "white" }, // Aux Park (Frunk)
+        { ch: 18, pos: Qt.vector3d(280, 110, -140), c: "orange" }, { ch: 19, pos: Qt.vector3d(280, 110, 140), c: "orange" }, // Side Markers
+        // Side Repeaters
+        { ch: 20, pos: Qt.vector3d(100, 120, -110), c: "orange" }, { ch: 21, pos: Qt.vector3d(100, 120, 110), c: "orange" },
+        // Rear
+        { ch: 22, pos: Qt.vector3d(-260, 75, -100), c: "orange" }, { ch: 23, pos: Qt.vector3d(-260, 75, 100), c: "orange" }, // Rear Turn
+        { ch: 24, pos: Qt.vector3d(-265, 68, 0), c: "red" }, // Brake
+        { ch: 25, pos: Qt.vector3d(-260, 68, -80), c: "red" }, { ch: 26, pos: Qt.vector3d(-260, 68, 80), c: "red" }, // Tail
+        { ch: 27, pos: Qt.vector3d(-260, 60, 0), c: "white" }, // Reverse
+        { ch: 28, pos: Qt.vector3d(-260, 50, 0), c: "red" }, // Rear Fog
+        { ch: 29, pos: Qt.vector3d(-260, 40, 0), c: "white" } // License
     ]
+
 
     Node {
         id: markers; visible: carRoot.showDebug

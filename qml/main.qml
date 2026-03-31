@@ -62,6 +62,17 @@ Window {
     property string errorMessage: ""
     property var manualFrameData: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
+    property var channelNames: [
+        "Left Outer Main", "Right Outer Main", "Left Inner Main", "Right Inner Main", "Left Signature", "Right Signature",
+        "Left Channel 4", "Right Channel 4", "Left Channel 5", "Right Channel 5", "Left Channel 6", "Right Channel 6",
+        "Left Front Turn", "Right Front Turn", "Left Front Fog", "Right Front Fog", "Left Aux Park", "Right Aux Park",
+        "Left Side Marker", "Right Side Marker", "Left Side Repeater", "Right Side Repeater", "Left Rear Turn", "Right Rear Turn",
+        "Brake Lights", "Left Tail", "Right Tail", "Reverse Lights", "Rear Fog Lights", "License Plate",
+        "Left Falcon Door", "Right Falcon Door", "Left Front Door", "Right Front Door", "Left Mirror", "Right Mirror",
+        "Left Front Window", "Left Rear Window", "Right Front Window", "Right Rear Window", "Liftgate", "Left Front Door Handle",
+        "Left Rear Door Handle", "Right Front Door Handle", "Right Rear Door Handle", "Charge Port"
+    ]
+
     function setManualChannel(ch, val) {
         if (ch < 0 || ch >= 48) return
         let next = []
@@ -369,17 +380,7 @@ Window {
 
     Item {
         anchors.fill: parent; visible: window.showDebug; z: 210
-        Repeater {
-            model: activeCar ? activeCar.markerModel : []
-            Label {
-                text: modelData.ch; color: "white"; font.bold: true; font.pixelSize: 16
-                property var scenePos: (activeCar && modelData) ? activeCar.mapPositionToScene(modelData.pos) : Qt.vector3d(0,0,0)
-                property var screenPos: (view && scenePos) ? view.mapFrom3DScene(scenePos) : Qt.vector3d(0,0,0)
-                x: screenPos.x - width/2; y: screenPos.y - height/2
-                background: Rectangle { color: "#aa000000"; radius: 4 }
-                padding: 4
-            }
-        }
+        // (Removed non-working 2D labels for 3D markers)
     }
 
     Rectangle {
@@ -389,10 +390,14 @@ Window {
             Column {
                 id: debugFlow; width: parent.width; spacing: 2
                 Repeater {
-                    model: 46
+                    model: window.channelNames.length
                     Rectangle {
                         width: 310; height: 20; color: (sync.currentFrameData && sync.currentFrameData[index] > 0) ? "red" : "#333333"
-                        Text { anchors.centerIn: parent; text: index + ": (" + (sync.currentFrameData ? (sync.currentFrameData[index] || 0) : 0) + ")"; color: "white"; font.pixelSize: 11 }
+                        Text { 
+                            anchors.centerIn: parent
+                            text: index + ": " + (window.channelNames[index] || "Unknown") + " (" + (sync.currentFrameData ? (sync.currentFrameData[index] || 0) : 0) + ")"
+                            color: "white"; font.pixelSize: 11 
+                        }
                     }
                 }
             }
