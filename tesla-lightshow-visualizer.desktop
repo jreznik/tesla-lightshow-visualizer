@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=Tesla Lightshow Visualizer
 Comment=3D Visualizer for Tesla custom lightshows (FSEQ)
-Exec=/home/jreznik/gemini/tesla-lightshow-visualizer/tesla-lightshow-visualizer
-Icon=/home/jreznik/gemini/tesla-lightshow-visualizer/assets/icon.svg
+Exec=tesla-lightshow-visualizer
+Icon=org.jreznik.TeslaLightshowVisualizer
 Terminal=false
 Type=Application
 Categories=Engineering;Graphics;3DGraphics;

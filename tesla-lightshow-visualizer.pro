@@ -23,5 +23,15 @@ linux: LIBS += -lvulkan
 DISTFILES += \
     qml/main.qml
 
-target.path = $$[QT_INSTALL_BINS]
-INSTALLS += target
+target.path = /usr/bin
+!isEmpty(PREFIX) {
+    target.path = $$PREFIX/bin
+}
+
+desktop.path = $$PREFIX/share/applications
+desktop.files = tesla-lightshow-visualizer.desktop
+
+icon.path = $$PREFIX/share/icons/hicolor/scalable/apps
+icon.files = assets/org.jreznik.TeslaLightshowVisualizer.svg
+
+INSTALLS += target desktop icon
