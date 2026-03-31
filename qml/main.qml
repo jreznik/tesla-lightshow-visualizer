@@ -115,7 +115,7 @@ Window {
         environment: ExtendedSceneEnvironment {
             clearColor: window.envBrightness > 0.5 ? "skyblue" : "#050505"
             backgroundMode: SceneEnvironment.Color
-            antialiasingMode: SceneEnvironment.MSAA; antialiasingQuality: SceneEnvironment.High
+            antialiasingMode: SceneEnvironment.SSAA; antialiasingQuality: SceneEnvironment.VeryHigh
             glowEnabled: true; glowStrength: 1.5; glowBloom: 0.3; tonemapMode: SceneEnvironment.TonemapModeFilmic
             fog: Fog { enabled: true; color: window.envBrightness > 0.5 ? "skyblue" : "#020202"; density: 0.1; depthEnabled: true; depthNear: 100; depthFar: 5000 }
         }
