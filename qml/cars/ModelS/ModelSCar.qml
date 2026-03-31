@@ -31,14 +31,14 @@ Node {
             if (val === nextLastFseq[i]) continue
             nextLastFseq[i] = val; changed = true
             let duration = 0; let target = 0.0
-            if (val === 0) { target = 0.0; duration = 0; }
+            if (val === 0) { target = 0.0; duration = (i === 41 ? 2000 : (i === 35 || i === 36 ? 1000 : 0)); }
             else if (val >= 25 && val <= 26) { target = 0.0; duration = 500; }
             else if (val === 51) { target = 0.0; duration = 1000; }
             else if (val >= 76 && val <= 77) { target = 0.0; duration = 2000; }
             else if (val >= 178 && val <= 179) { target = 1.0; duration = 500; }
             else if (val === 204) { target = 1.0; duration = 1000; }
             else if (val >= 229 && val <= 230) { target = 1.0; duration = 2000; }
-            else if (val === 255) { target = 1.0; duration = 0; }
+            else if (val === 255) { target = 1.0; duration = (i === 41 ? 2000 : (i === 35 || i === 36 ? 1000 : 0)); }
             else { target = val / 255.0; duration = 0; }
             nextTargets[i] = target
             if (duration === 0) { nextIntensities[i] = target; nextSteps[i] = 0; }
@@ -110,6 +110,7 @@ Node {
         id: geometryCorrection
         position: Qt.vector3d(-10.7, 1.57, 0)
 
+        // --- STATIC PARTS ---
         Model { id: bodyModel; source: "meshes/body_mesh.mesh"; materials: [ mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red ] }
         Model { id: wheelsModel; source: "meshes/wheels_mesh.mesh"; materials: [ mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel ] }
         Model { id: topGlassModel; source: "meshes/windows_Top_mesh.mesh"; materials: [ mat_Glass ] }
@@ -133,7 +134,6 @@ Node {
         Model { id: doorLRModel; source: "meshes/door_LR_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
         Model { id: doorRRModel; source: "meshes/door_RR_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, Math.max(getVal(22),getVal(23))*10, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
         Model { id: hoodModel; source: "meshes/hood_mesh.mesh"; materials: [ mat_Red ] }
-        Model { id: trunkModel; source: "meshes/trunk_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red ] }
         Model { id: spoilerModel; source: "meshes/spoiler_mesh.mesh"; materials: [ mat_Black ] }
         Model { id: windowLFModel; source: "meshes/window_LF_mesh.mesh"; materials: [ mat_Glass ] }
         Model { id: windowRFModel; source: "meshes/window_RF_mesh.mesh"; materials: [ mat_Glass ] }
@@ -143,6 +143,40 @@ Node {
         
         Model { id: physicalRepeaterL; source: "meshes/side_Repeater_L_mesh.mesh"; materials: [ mat_L_Repeat ] }
         Model { id: physicalRepeaterR; source: "meshes/side_Repeater_R_mesh.mesh"; materials: [ mat_R_Repeat ] }
+
+        // Trunk (Liftgate - Channel 41)
+        Node {
+            id: trunkNode
+            position: Qt.vector3d(-250, 180, 0) // Pivot at rear edge of roof
+            eulerRotation: Qt.vector3d(0, 0, getVal(41) * -70) // Rotate UP along Z (local space)
+            Model { 
+                source: "meshes/trunk_mesh.mesh"
+                position: Qt.vector3d(250, -180, 0) // Re-center
+                materials: [ mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Glass, mat_Red ] 
+            }
+        }
+
+        // Mirrors (Channels 35 Left, 36 Right)
+        Node {
+            id: mirrorLNode
+            position: Qt.vector3d(230, 150, -195) // Pivot slightly outward to avoid clipping
+            eulerRotation: Qt.vector3d(0, getVal(35) * 15, 0)
+            Model { 
+                source: "meshes/door_LF_Mirror_mesh.mesh"
+                position: Qt.vector3d(-230, -150, 195) // Re-center
+                materials: [ mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red ] 
+            }
+        }
+        Node {
+            id: mirrorRNode
+            position: Qt.vector3d(230, 150, 195) // Pivot slightly outward to avoid clipping
+            eulerRotation: Qt.vector3d(0, getVal(36) * -15, 0)
+            Model { 
+                source: "meshes/door_RF_Mirror_mesh.mesh"
+                position: Qt.vector3d(-230, -150, -195) // Re-center
+                materials: [ mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red ] 
+            }
+        }
 
         Loader { sourceComponent: beamComponent; x: 482; y: 120; z: -180; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(0) }); item.length = 150; item.col = "white" } } 
         Loader { sourceComponent: beamComponent; x: 482; y: 120; z: 180; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(1) }); item.length = 150; item.col = "white" } } 
@@ -173,7 +207,10 @@ Node {
         { ch: 24, pos: Qt.vector3d(-500, 160, 0), c: "red" },
         { ch: 25, pos: Qt.vector3d(-480, 180, -150), c: "red" }, { ch: 26, pos: Qt.vector3d(-480, 180, 150), c: "red" },
         { ch: 27, pos: Qt.vector3d(-480, 140, 0), c: "white" },
-        { ch: 28, pos: Qt.vector3d(-480, 130, 0), c: "red" }
+        { ch: 28, pos: Qt.vector3d(-480, 130, 0), c: "red" },
+        { ch: 35, pos: Qt.vector3d(230, 150, -195), c: "white" }, // L Mirror
+        { ch: 36, pos: Qt.vector3d(230, 150, 195), c: "white" },  // R Mirror
+        { ch: 41, pos: Qt.vector3d(-250, 180, 0), c: "white" }   // Liftgate
     ]
 
     Node {

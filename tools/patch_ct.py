@@ -40,13 +40,18 @@ def get_ct_segment(face_line, mtl):
     
     # blinn5SG: Lights_AO.png (Front / Offroad)
     # blinn6SG: Lights_AO_Red.png (Rear)
+    # lambert2SG: Exterior_AO_Dark.png (Main Body)
     
     if mtl == 'blinn5SG':
         if ay > 120: return "CT_Offroad_Bar"
-        if az > 80 or az < -80: return "CT_Main_Beams" # Outer edges are headlights
+        if az > 80 or az < -80: return "CT_Main_Beams"
         return "CT_Front_Bar"
     elif mtl == 'blinn6SG':
         return "CT_Rear_Bar"
+    elif mtl == 'lambert2SG':
+        # Frunk area is front-top: X > 150, Y > 80, Z between -100 and 100
+        if ax > 150 and ay > 80 and -100 < az < 100:
+            return "CT_Frunk"
     
     return None
 

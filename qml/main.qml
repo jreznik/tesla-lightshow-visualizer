@@ -73,6 +73,16 @@ Window {
         "Left Rear Door Handle", "Right Front Door Handle", "Right Rear Door Handle", "Charge Port"
     ]
 
+    property var keyHints: {
+        return {
+            0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8", 9: "9",
+            10: "Q", 11: "W", 12: "E", 13: "R", 14: "T", 15: "Y", 16: "U", 17: "I", 18: "O", 19: "P",
+            20: "A", 21: "S", 22: "Z", 23: "X", 24: "G", 25: "H", 26: "J", 27: "K", 28: "L", 29: ";",
+            30: "C", 31: "V", 32: "B", 33: "N", 34: "M", 35: ",", 36: ".", 37: "/", 38: "-", 39: "=",
+            40: "[", 41: "L", 42: "\\", 43: "'", 44: "SPACE", 45: "ENTER"
+        }
+    }
+
     function setManualChannel(ch, val) {
         if (ch < 0 || ch >= 48) return
         let next = []
@@ -121,7 +131,15 @@ Window {
             else if (event.key === Qt.Key_Down) zoomTimer.dir = 1
             else if (window.showDebug) {
                 let ch = getChannelForKey(event.key)
-                if (ch !== -1) setManualChannel(ch, 255)
+                if (ch !== -1) {
+                    if (ch === 41 || ch === 35 || ch === 36) {
+                        // Toggle for dance moves
+                        let current = window.manualFrameData[ch]
+                        setManualChannel(ch, current > 0 ? 0 : 255)
+                    } else {
+                        setManualChannel(ch, 255)
+                    }
+                }
             }
         }
         Keys.onReleased: (event) => {
@@ -130,7 +148,7 @@ Window {
             else if (event.key === Qt.Key_Up || event.key === Qt.Key_Down) zoomTimer.dir = 0
             else if (window.showDebug) {
                 let ch = getChannelForKey(event.key)
-                if (ch !== -1) setManualChannel(ch, 0)
+                if (ch !== -1 && ch !== 41 && ch !== 35 && ch !== 36) setManualChannel(ch, 0)
             }
         }
         function getChannelForKey(key) {
@@ -139,9 +157,12 @@ Window {
             if (key === Qt.Key_T) return 14; if (key === Qt.Key_Y) return 15; if (key === Qt.Key_U) return 16; if (key === Qt.Key_I) return 17
             if (key === Qt.Key_O) return 18; if (key === Qt.Key_P) return 19; if (key === Qt.Key_A) return 20; if (key === Qt.Key_S) return 21
             if (key === Qt.Key_Z) return 22; if (key === Qt.Key_X) return 23; if (key === Qt.Key_G) return 24; if (key === Qt.Key_H) return 25
-            if (key === Qt.Key_J) return 26; if (key === Qt.Key_K) return 27; if (key === Qt.Key_L) return 28; if (key === Qt.Key_Semicolon) return 29
+            if (key === Qt.Key_J) return 26; if (key === Qt.Key_K) return 27; if (key === Qt.Key_L) return 41; // Liftgate
+            if (key === Qt.Key_Semicolon) return 29
             if (key === Qt.Key_C) return 30; if (key === Qt.Key_V) return 31; if (key === Qt.Key_B) return 32; if (key === Qt.Key_N) return 33
-            if (key === Qt.Key_M) return 34; if (key === Qt.Key_Comma) return 35; if (key === Qt.Key_Period) return 36; if (key === Qt.Key_Slash) return 37
+            if (key === Qt.Key_M) return 34; if (key === Qt.Key_Comma) return 35; // Left Mirror
+            if (key === Qt.Key_Period) return 36; // Right Mirror
+            if (key === Qt.Key_Slash) return 37
             if (key === Qt.Key_Minus) return 38; if (key === Qt.Key_Equal) return 39; if (key === Qt.Key_BracketLeft) return 40; if (key === Qt.Key_BracketRight) return 41
             if (key === Qt.Key_Backslash) return 42; if (key === Qt.Key_Apostrophe) return 43; if (key === Qt.Key_Space) return 44; if (key === Qt.Key_Return) return 45
             return -1
@@ -395,7 +416,7 @@ Window {
                         width: 310; height: 20; color: (sync.currentFrameData && sync.currentFrameData[index] > 0) ? "red" : "#333333"
                         Text { 
                             anchors.centerIn: parent
-                            text: index + ": " + (window.channelNames[index] || "Unknown") + " (" + (sync.currentFrameData ? (sync.currentFrameData[index] || 0) : 0) + ")"
+                            text: "[" + (window.keyHints[index] || "?") + "] " + index + ": " + (window.channelNames[index] || "Unknown") + " (" + (sync.currentFrameData ? (sync.currentFrameData[index] || 0) : 0) + ")"
                             color: "white"; font.pixelSize: 11 
                         }
                     }

@@ -32,14 +32,14 @@ Node {
             if (val === nextLastFseq[i]) continue
             nextLastFseq[i] = val; changed = true
             let duration = 0; let target = 0.0
-            if (val === 0) { target = 0.0; duration = 0; }
+            if (val === 0) { target = 0.0; duration = (i === 41 ? 2000 : (i === 35 || i === 36 ? 1000 : 0)); }
             else if (val >= 25 && val <= 26) { target = 0.0; duration = 500; }
             else if (val === 51) { target = 0.0; duration = 1000; }
             else if (val >= 76 && val <= 77) { target = 0.0; duration = 2000; }
             else if (val >= 178 && val <= 179) { target = 1.0; duration = 500; }
             else if (val === 204) { target = 1.0; duration = 1000; }
             else if (val >= 229 && val <= 230) { target = 1.0; duration = 2000; }
-            else if (val === 255) { target = 1.0; duration = 0; }
+            else if (val === 255) { target = 1.0; duration = (i === 41 ? 2000 : (i === 35 || i === 36 ? 1000 : 0)); }
             else { target = val / 255.0; duration = 0; }
             nextTargets[i] = target
             if (duration === 0) { nextIntensities[i] = target; nextSteps[i] = 0; }
@@ -126,6 +126,20 @@ Node {
             Model { source: "meshes/ct_Offroad_Bar_mesh.mesh"; materials: [ mat_Offroad_Bar ]; castsShadows: true }
             Model { source: "meshes/ct_Rear_Bar_mesh.mesh"; materials: [ mat_Rear_Bar ]; castsShadows: true }
 
+            // --- ANIMATED PARTS ---
+            // Powered Frunk (Channel 41)
+            Node {
+                id: frunkNode
+                position: Qt.vector3d(150, 130, 0) // Pivot at top hinge
+                eulerRotation: Qt.vector3d(0, 0, getVal(41) * -50)
+                Model {
+                    source: "meshes/ct_Frunk_mesh.mesh"
+                    position: Qt.vector3d(-150, -130, 0) // Re-center
+                    materials: [ mat_Body ]
+                    castsShadows: true
+                }
+            }
+
             // --- Front Light Effects ---
             // Main Beam (Channel 0/1)
             Loader { sourceComponent: beamComponent; x: 280; y: 100; z: -110; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(0) }); item.length = 200 } } 
@@ -181,7 +195,10 @@ Node {
         { ch: 25, pos: Qt.vector3d(-260, 68, -80), c: "red" }, { ch: 26, pos: Qt.vector3d(-260, 68, 80), c: "red" }, // Tail
         { ch: 27, pos: Qt.vector3d(-260, 60, 0), c: "white" }, // Reverse
         { ch: 28, pos: Qt.vector3d(-260, 50, 0), c: "red" }, // Rear Fog
-        { ch: 29, pos: Qt.vector3d(-260, 40, 0), c: "white" } // License
+        { ch: 29, pos: Qt.vector3d(-260, 40, 0), c: "white" }, // License
+        { ch: 35, pos: Qt.vector3d(100, 130, -110), c: "white" }, // L Mirror (approx)
+        { ch: 36, pos: Qt.vector3d(100, 130, 110), c: "white" },  // R Mirror (approx)
+        { ch: 41, pos: Qt.vector3d(150, 130, 0), c: "white" }    // Frunk Hinge
     ]
 
 
