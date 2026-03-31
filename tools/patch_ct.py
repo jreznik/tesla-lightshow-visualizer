@@ -43,6 +43,7 @@ def get_ct_segment(face_line, mtl):
     
     if mtl == 'blinn5SG':
         if ay > 120: return "CT_Offroad_Bar"
+        if az > 80 or az < -80: return "CT_Main_Beams" # Outer edges are headlights
         return "CT_Front_Bar"
     elif mtl == 'blinn6SG':
         return "CT_Rear_Bar"

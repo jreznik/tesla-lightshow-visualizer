@@ -59,6 +59,12 @@ Ni 1.00
 Ks 0.50 0.50 0.50
 Ns 18.00
 
+newmtl CT_Main_Beams_Mtl
+Kd 1.0 1.0 1.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
 newmtl CT_Front_Bar_Mtl
 Kd 1.0 1.0 1.0
 Ka 0.0 0.0 0.0
