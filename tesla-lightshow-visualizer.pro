@@ -21,8 +21,7 @@ macx: ICON = assets/icon.svg
 linux: LIBS += -lvulkan
 
 DISTFILES += \
-    qml/main.qml \
-    qml/CarModel.qml
+    qml/main.qml
 
 target.path = $$[QT_INSTALL_BINS]
 INSTALLS += target

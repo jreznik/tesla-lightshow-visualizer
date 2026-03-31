@@ -1,9 +1,9 @@
 <RCC>
     <qresource prefix="/qt/qml/tesla-lightshow-visualizer">
         <file alias="main.qml">qml/main.qml</file>
-        <file alias="CarModel.qml">qml/CarModel.qml</file>
         <file alias="ModelSCar.qml">qml/ModelSCar.qml</file>
         <file alias="ModelSCarInternal.qml">qml/ModelSCarInternal.qml</file>
+        <file alias="CybertruckCar.qml">qml/CybertruckCar.qml</file>
         
         <!-- Model S Maps -->
         <file alias="qml/maps/Arachnid_Wheel_AO.png">qml/maps/Arachnid_Wheel_AO.png</file>
@@ -13,44 +13,51 @@
         <file alias="qml/maps/Lights_Red_AO.png">qml/maps/Lights_Red_AO.png</file>
 
         <!-- Model S Meshes -->
-        <file alias="meshes/body_mesh.mesh">qml/meshes/body_mesh.mesh</file>
-        <file alias="meshes/charge_Cap_mesh.mesh">qml/meshes/charge_Cap_mesh.mesh</file>
-        <file alias="meshes/door_LF_mesh.mesh">qml/meshes/door_LF_mesh.mesh</file>
-        <file alias="meshes/door_LF_Mirror_mesh.mesh">qml/meshes/door_LF_Mirror_mesh.mesh</file>
-        <file alias="meshes/door_LR_mesh.mesh">qml/meshes/door_LR_mesh.mesh</file>
-        <file alias="meshes/door_RF_mesh.mesh">qml/meshes/door_RF_mesh.mesh</file>
-        <file alias="meshes/door_RF_Mirror_mesh.mesh">qml/meshes/door_RF_Mirror_mesh.mesh</file>
-        <file alias="meshes/door_RR_mesh.mesh">qml/meshes/door_RR_mesh.mesh</file>
-        <file alias="meshes/hood_Hinge_1_mesh.mesh">qml/meshes/hood_Hinge_1_mesh.mesh</file>
-        <file alias="meshes/hood_Hinge_2_mesh.mesh">qml/meshes/hood_Hinge_2_mesh.mesh</file>
-        <file alias="meshes/hood_mesh.mesh">qml/meshes/hood_mesh.mesh</file>
-        <file alias="meshes/spoiler_mesh.mesh">qml/meshes/spoiler_mesh.mesh</file>
-        <file alias="meshes/trunk_mesh.mesh">qml/meshes/trunk_mesh.mesh</file>
-        <file alias="meshes/wheels_mesh.mesh">qml/meshes/wheels_mesh.mesh</file>
-        <file alias="meshes/window_LF_mesh.mesh">qml/meshes/window_LF_mesh.mesh</file>
-        <file alias="meshes/window_LR_mesh.mesh">qml/meshes/window_LR_mesh.mesh</file>
-        <file alias="meshes/window_RF_mesh.mesh">qml/meshes/window_RF_mesh.mesh</file>
-        <file alias="meshes/window_RR_mesh.mesh">qml/meshes/window_RR_mesh.mesh</file>
-        <file alias="meshes/windows_Top_mesh.mesh">qml/meshes/windows_Top_mesh.mesh</file>
+        <file alias="meshes/ModelS/body_mesh.mesh">qml/meshes/ModelS/body_mesh.mesh</file>
+        <file alias="meshes/ModelS/charge_Cap_mesh.mesh">qml/meshes/ModelS/charge_Cap_mesh.mesh</file>
+        <file alias="meshes/ModelS/door_LF_mesh.mesh">qml/meshes/ModelS/door_LF_mesh.mesh</file>
+        <file alias="meshes/ModelS/door_LF_Mirror_mesh.mesh">qml/meshes/ModelS/door_LF_Mirror_mesh.mesh</file>
+        <file alias="meshes/ModelS/door_LR_mesh.mesh">qml/meshes/ModelS/door_LR_mesh.mesh</file>
+        <file alias="meshes/ModelS/door_RF_mesh.mesh">qml/meshes/ModelS/door_RF_mesh.mesh</file>
+        <file alias="meshes/ModelS/door_RF_Mirror_mesh.mesh">qml/meshes/ModelS/door_RF_Mirror_mesh.mesh</file>
+        <file alias="meshes/ModelS/door_RR_mesh.mesh">qml/meshes/ModelS/door_RR_mesh.mesh</file>
+        <file alias="meshes/ModelS/hood_Hinge_1_mesh.mesh">qml/meshes/ModelS/hood_Hinge_1_mesh.mesh</file>
+        <file alias="meshes/ModelS/hood_Hinge_2_mesh.mesh">qml/meshes/ModelS/hood_Hinge_2_mesh.mesh</file>
+        <file alias="meshes/ModelS/hood_mesh.mesh">qml/meshes/ModelS/hood_mesh.mesh</file>
+        <file alias="meshes/ModelS/spoiler_mesh.mesh">qml/meshes/ModelS/spoiler_mesh.mesh</file>
+        <file alias="meshes/ModelS/trunk_mesh.mesh">qml/meshes/ModelS/trunk_mesh.mesh</file>
+        <file alias="meshes/ModelS/wheels_mesh.mesh">qml/meshes/ModelS/wheels_mesh.mesh</file>
+        <file alias="meshes/ModelS/window_LF_mesh.mesh">qml/meshes/ModelS/window_LF_mesh.mesh</file>
+        <file alias="meshes/ModelS/window_LR_mesh.mesh">qml/meshes/ModelS/window_LR_mesh.mesh</file>
+        <file alias="meshes/ModelS/window_RF_mesh.mesh">qml/meshes/ModelS/window_RF_mesh.mesh</file>
+        <file alias="meshes/ModelS/window_RR_mesh.mesh">qml/meshes/ModelS/window_RR_mesh.mesh</file>
+        <file alias="meshes/ModelS/windows_Top_mesh.mesh">qml/meshes/ModelS/windows_Top_mesh.mesh</file>
 
-        <!-- Segmented Light Meshes -->
-        <file alias="meshes/front_Inner_L_mesh.mesh">qml/meshes/front_Inner_L_mesh.mesh</file>
-        <file alias="meshes/front_Inner_R_mesh.mesh">qml/meshes/front_Inner_R_mesh.mesh</file>
-        <file alias="meshes/front_Outer_L_mesh.mesh">qml/meshes/front_Outer_L_mesh.mesh</file>
-        <file alias="meshes/front_Outer_R_mesh.mesh">qml/meshes/front_Outer_R_mesh.mesh</file>
-        <file alias="meshes/front_Sig_L_mesh.mesh">qml/meshes/front_Sig_L_mesh.mesh</file>
-        <file alias="meshes/front_Sig_R_mesh.mesh">qml/meshes/front_Sig_R_mesh.mesh</file>
-        <file alias="meshes/front_Turn_L_mesh.mesh">qml/meshes/front_Turn_L_mesh.mesh</file>
-        <file alias="meshes/front_Turn_R_mesh.mesh">qml/meshes/front_Turn_R_mesh.mesh</file>
-        <file alias="meshes/front_Fog_L_mesh.mesh">qml/meshes/front_Fog_L_mesh.mesh</file>
-        <file alias="meshes/front_Fog_R_mesh.mesh">qml/meshes/front_Fog_R_mesh.mesh</file>
-        <file alias="meshes/rear_Brake_L_mesh.mesh">qml/meshes/rear_Brake_L_mesh.mesh</file>
-        <file alias="meshes/rear_Brake_R_mesh.mesh">qml/meshes/rear_Brake_R_mesh.mesh</file>
-        <file alias="meshes/rear_Tail_L_mesh.mesh">qml/meshes/rear_Tail_L_mesh.mesh</file>
-        <file alias="meshes/rear_Tail_R_mesh.mesh">qml/meshes/rear_Tail_R_mesh.mesh</file>
-        
-        <!-- Physical Repeater Meshes -->
-        <file alias="meshes/side_Repeater_L_mesh.mesh">qml/meshes/side_Repeater_L_mesh.mesh</file>
-        <file alias="meshes/side_Repeater_R_mesh.mesh">qml/meshes/side_Repeater_R_mesh.mesh</file>
+        <!-- Segmented Model S Light Meshes -->
+        <file alias="meshes/ModelS/front_Inner_L_mesh.mesh">qml/meshes/ModelS/front_Inner_L_mesh.mesh</file>
+        <file alias="meshes/ModelS/front_Inner_R_mesh.mesh">qml/meshes/ModelS/front_Inner_R_mesh.mesh</file>
+        <file alias="meshes/ModelS/front_Outer_L_mesh.mesh">qml/meshes/ModelS/front_Outer_L_mesh.mesh</file>
+        <file alias="meshes/ModelS/front_Outer_R_mesh.mesh">qml/meshes/ModelS/front_Outer_R_mesh.mesh</file>
+        <file alias="meshes/ModelS/front_Sig_L_mesh.mesh">qml/meshes/ModelS/front_Sig_L_mesh.mesh</file>
+        <file alias="meshes/ModelS/front_Sig_R_mesh.mesh">qml/meshes/ModelS/front_Sig_R_mesh.mesh</file>
+        <file alias="meshes/ModelS/front_Turn_L_mesh.mesh">qml/meshes/ModelS/front_Turn_L_mesh.mesh</file>
+        <file alias="meshes/ModelS/front_Turn_R_mesh.mesh">qml/meshes/ModelS/front_Turn_R_mesh.mesh</file>
+        <file alias="meshes/ModelS/front_Fog_L_mesh.mesh">qml/meshes/ModelS/front_Fog_L_mesh.mesh</file>
+        <file alias="meshes/ModelS/front_Fog_R_mesh.mesh">qml/meshes/ModelS/front_Fog_R_mesh.mesh</file>
+        <file alias="meshes/ModelS/rear_Brake_L_mesh.mesh">qml/meshes/ModelS/rear_Brake_L_mesh.mesh</file>
+        <file alias="meshes/ModelS/rear_Brake_R_mesh.mesh">qml/meshes/ModelS/rear_Brake_R_mesh.mesh</file>
+        <file alias="meshes/ModelS/rear_Tail_L_mesh.mesh">qml/meshes/ModelS/rear_Tail_L_mesh.mesh</file>
+        <file alias="meshes/ModelS/rear_Tail_R_mesh.mesh">qml/meshes/ModelS/rear_Tail_R_mesh.mesh</file>
+        <file alias="meshes/ModelS/side_Repeater_L_mesh.mesh">qml/meshes/ModelS/side_Repeater_L_mesh.mesh</file>
+        <file alias="meshes/ModelS/side_Repeater_R_mesh.mesh">qml/meshes/ModelS/side_Repeater_R_mesh.mesh</file>
+
+        <!-- Cybertruck Specific Meshes -->
+        <file alias="meshes/Cybertruck/body_mesh.mesh">qml/meshes/Cybertruck/body_mesh.mesh</file>
+        <file alias="meshes/Cybertruck/wheels_mesh.mesh">qml/meshes/Cybertruck/wheels_mesh.mesh</file>
+        <file alias="meshes/Cybertruck/windows_mesh.mesh">qml/meshes/Cybertruck/windows_mesh.mesh</file>
+        <file alias="meshes/Cybertruck/lights_mesh.mesh">qml/meshes/Cybertruck/lights_mesh.mesh</file>
+        <file alias="meshes/Cybertruck/ct_Front_Bar_mesh.mesh">qml/meshes/Cybertruck/ct_Front_Bar_mesh.mesh</file>
+        <file alias="meshes/Cybertruck/ct_Offroad_Bar_mesh.mesh">qml/meshes/Cybertruck/ct_Offroad_Bar_mesh.mesh</file>
+        <file alias="meshes/Cybertruck/ct_Rear_Bar_mesh.mesh">qml/meshes/Cybertruck/ct_Rear_Bar_mesh.mesh</file>
     </qresource>
 </RCC>

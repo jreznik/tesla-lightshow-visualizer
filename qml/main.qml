@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick3D
 import QtQuick3D.Helpers
 import QtQuick.Dialogs
+import QtCore
 import Tesla.Lightshow
 
 Window {
@@ -13,6 +14,7 @@ Window {
     title: qsTr("Tesla Lightshow 3D Visualizer")
     color: "black"
     
+    property string carType: "ModelS"
     property real carRotationZ: 270
     property real cameraZ: 3000 
     property real envBrightness: 0.5 
@@ -106,6 +108,7 @@ Window {
     View3D {
         id: view
         anchors.fill: parent
+        camera: camera
         environment: ExtendedSceneEnvironment {
             clearColor: window.envBrightness > 0.5 ? "skyblue" : "#050505"
             backgroundMode: SceneEnvironment.Color
@@ -114,14 +117,20 @@ Window {
             fog: Fog { enabled: true; color: window.envBrightness > 0.5 ? "skyblue" : "#020202"; density: 0.1; depthEnabled: true; depthNear: 100; depthFar: 5000 }
         }
         PerspectiveCamera { id: camera; position: Qt.vector3d(0, 400, window.cameraZ); eulerRotation: Qt.vector3d(-15, 0, 0) }
+        
         Node {
             eulerRotation: Qt.vector3d(0, window.carRotationZ, 0)
-            ModelSCar {
-                id: car
-                position: Qt.vector3d(450, 0, 80)
+            Node {
+                position: Qt.vector3d(0, 0, 0)
                 scale: Qt.vector3d(1.8, 1.8, 1.8)
-                showDebug: window.showDebug
-                frameData: sync.playing ? sync.currentFrameData : window.manualFrameData
+                Loader {
+                    id: carLoader
+                    source: window.carType === "ModelS" ? "ModelSCar.qml" : "CybertruckCar.qml"
+                    onLoaded: {
+                        item.showDebug = Qt.binding(function() { return window.showDebug })
+                        item.frameData = Qt.binding(function() { return sync.playing ? sync.currentFrameData : window.manualFrameData })
+                    }
+                }
             }
         }
         Model {
@@ -154,38 +163,42 @@ Window {
     Rectangle {
         id: controlPanel
         anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.margins: 20
-        width: 80; height: 540; color: "#66000000"; radius: 15; border.color: "#33ffffff"; z: 200
+        width: 80; height: 600; color: "#66000000"; radius: 15; border.color: "#33ffffff"; z: 200
         
         Column {
-            anchors.fill: parent; anchors.margins: 10; spacing: 25
+            anchors.fill: parent; anchors.margins: 10; spacing: 20
             Column {
-                width: parent.width; spacing: 12
+                width: parent.width; spacing: 10
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: window.envBrightness > 0.5 ? "\u2600" : "\u263E" 
                     font.pixelSize: 24; width: 60; height: 50
                     onClicked: window.envBrightness = (window.envBrightness > 0.5 ? 0.4 : 1.0)
-                    ToolTip.visible: hovered; ToolTip.text: "Toggle Day/Night"
                 }
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: window.visibility === Window.FullScreen ? "\u25A3" : "\u26F6" 
                     font.pixelSize: 24; width: 60; height: 50
                     onClicked: window.visibility = (window.visibility === Window.FullScreen) ? Window.Windowed : Window.FullScreen
-                    ToolTip.visible: hovered; ToolTip.text: "Toggle Fullscreen"
+                }
+                ComboBox {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: 60; height: 40
+                    model: ["S", "CT"]
+                    onActivated: window.carType = (index === 0 ? "ModelS" : "Cybertruck")
                 }
             }
             Column {
-                width: parent.width; spacing: 20
+                width: parent.width; spacing: 15
                 Column {
                     width: parent.width; spacing: 5
                     Text { text: "ROT"; color: "white"; font.pixelSize: 10; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
-                    Slider { id: rotSlider; orientation: Qt.Vertical; from: 0; to: 360; value: window.carRotationZ % 360; height: 130; anchors.horizontalCenter: parent.horizontalCenter; onMoved: window.carRotationZ = value }
+                    Slider { id: rotSlider; orientation: Qt.Vertical; from: 0; to: 360; value: window.carRotationZ % 360; height: 120; anchors.horizontalCenter: parent.horizontalCenter; onMoved: window.carRotationZ = value }
                 }
                 Column {
                     width: parent.width; spacing: 5
                     Text { text: "ZOOM"; color: "white"; font.pixelSize: 10; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
-                    Slider { id: zoomSlider; orientation: Qt.Vertical; from: 1000; to: 5000; value: window.cameraZ; height: 130; anchors.horizontalCenter: parent.horizontalCenter; onMoved: window.cameraZ = value }
+                    Slider { id: zoomSlider; orientation: Qt.Vertical; from: 1000; to: 5000; value: window.cameraZ; height: 120; anchors.horizontalCenter: parent.horizontalCenter; onMoved: window.cameraZ = value }
                 }
             }
         }
@@ -212,11 +225,7 @@ Window {
                     text: sync.playing ? "\u23F8" : "\u25B6"
                     font.pixelSize: 18; width: 50; height: 40
                     enabled: sync.showName !== ""
-                    onClicked: { 
-                        if (sync.playing) sync.pause()
-                        else sync.play()
-                        keyboardHandler.forceActiveFocus() 
-                    }
+                    onClicked: { if (sync.playing) sync.pause(); else sync.play(); keyboardHandler.forceActiveFocus() }
                 }
                 Button { 
                     text: "\u25A0"
@@ -238,11 +247,11 @@ Window {
     Item {
         anchors.fill: parent; visible: window.showDebug; z: 210
         Repeater {
-            model: car.markerModel
+            model: carLoader.item ? carLoader.item.markerModel : []
             Label {
                 text: modelData.ch; color: "white"; font.bold: true; font.pixelSize: 16
-                property var scenePos: car ? car.mapPositionToScene(modelData.pos) : Qt.vector3d(0,0,0)
-                property var screenPos: view ? view.map3dTo2d(scenePos) : Qt.vector2d(0,0)
+                property var scenePos: (carLoader.item && modelData) ? carLoader.item.mapPositionToScene(modelData.pos) : Qt.vector3d(0,0,0)
+                property var screenPos: (view && scenePos) ? view.mapFrom3DScene(scenePos) : Qt.vector3d(0,0,0)
                 x: screenPos.x - width/2; y: screenPos.y - height/2
                 background: Rectangle { color: "#aa000000"; radius: 4 }
                 padding: 4
@@ -257,34 +266,10 @@ Window {
             Column {
                 id: debugFlow; width: parent.width; spacing: 2
                 Repeater {
-                    model: [
-                        { k: "0", ch: 0, n: "L Outer Beam" }, { k: "1", ch: 1, n: "R Outer Beam" },
-                        { k: "2", ch: 2, n: "L Inner Beam" }, { k: "3", ch: 3, n: "R Inner Beam" },
-                        { k: "4", ch: 4, n: "L Signature" }, { k: "5", ch: 5, n: "R Signature" },
-                        { k: "6", ch: 6, n: "L Channel 4" }, { k: "7", ch: 7, n: "R Channel 4" },
-                        { k: "8", ch: 8, n: "L Channel 5" }, { k: "9", ch: 9, n: "R Channel 5" },
-                        { k: "Q", ch: 10, n: "L Channel 6" }, { k: "W", ch: 11, n: "R Channel 6" },
-                        { k: "E", ch: 12, n: "L Front Turn" }, { k: "R", ch: 13, n: "R Front Turn" },
-                        { k: "T", ch: 14, n: "L Front Fog" }, { k: "Y", ch: 15, n: "R Front Fog" },
-                        { k: "U", ch: 16, n: "L Aux Park" }, { k: "I", ch: 17, n: "R Aux Park" },
-                        { k: "O", ch: 18, n: "L Side Marker" }, { k: "P", ch: 19, n: "R Side Marker" },
-                        { k: "A", ch: 20, n: "L Side Repeat" }, { k: "S", ch: 21, n: "R Side Repeat" },
-                        { k: "Z", ch: 22, n: "L Rear Turn" }, { k: "X", ch: 23, n: "R Rear Turn" },
-                        { k: "G", ch: 24, n: "Brake Lights" }, { k: "H", ch: 25, n: "L Tail" },
-                        { k: "J", ch: 26, n: "R Tail" }, { k: "K", ch: 27, n: "Reverse" },
-                        { k: "L", ch: 28, n: "Rear Fog" }, { k: ";", ch: 29, n: "License Plate" },
-                        { k: "C", ch: 30, n: "L Falcon" }, { k: "V", ch: 31, n: "R Falcon" },
-                        { k: "B", ch: 32, n: "L Front Door" }, { k: "N", ch: 33, n: "R Front Door" },
-                        { k: "M", ch: 34, n: "L Mirror" }, { k: ",", ch: 35, n: "R Mirror" },
-                        { k: ".", ch: 36, n: "L Front Win" }, { k: "/", ch: 37, n: "L Rear Win" },
-                        { k: "-", ch: 38, n: "R Front Win" }, { k: "=", ch: 39, n: "R Rear Win" },
-                        { k: "[", ch: 40, n: "Liftgate" }, { k: "]", ch: 41, n: "L F Handle" },
-                        { k: "\\", ch: 42, n: "L R Handle" }, { k: "'", ch: 43, n: "R F Handle" },
-                        { k: "SPC", ch: 44, n: "R R Handle" }, { ch: 45, n: "Charge Port" }
-                    ]
+                    model: 46
                     Rectangle {
-                        width: 310; height: 20; color: (car.frameData && car.frameData[modelData.ch] > 0) ? "red" : "#333333"
-                        Text { anchors.centerIn: parent; text: "[" + (modelData.k || "?") + "] " + modelData.ch + ": " + modelData.n + " (" + (car.frameData ? (car.frameData[modelData.ch] || 0) : 0) + ")"; color: "white"; font.pixelSize: 11 }
+                        width: 310; height: 20; color: (sync.currentFrameData && sync.currentFrameData[index] > 0) ? "red" : "#333333"
+                        Text { anchors.centerIn: parent; text: index + ": (" + (sync.currentFrameData ? (sync.currentFrameData[index] || 0) : 0) + ")"; color: "white"; font.pixelSize: 11 }
                     }
                 }
             }
