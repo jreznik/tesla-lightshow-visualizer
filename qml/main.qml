@@ -17,7 +17,7 @@ Window {
     property string carType: "ModelS"
     property real carRotationZ: 270
     property real cameraZ: 3000 
-    property real envBrightness: 0.5 
+    property real envBrightness: 0.8
     property bool showDebug: false
     property bool showFPS: false
     property string errorMessage: ""
@@ -120,28 +120,57 @@ Window {
         
         Node {
             eulerRotation: Qt.vector3d(0, window.carRotationZ, 0)
+            
             Node {
                 position: Qt.vector3d(0, 0, 0)
-                scale: Qt.vector3d(1.8, 1.8, 1.8)
-                Loader {
-                    id: carLoader
-                    source: window.carType === "ModelS" ? "ModelSCar.qml" : "CybertruckCar.qml"
-                    onLoaded: {
-                        item.showDebug = Qt.binding(function() { return window.showDebug })
-                        item.frameData = Qt.binding(function() { return sync.playing ? sync.currentFrameData : window.manualFrameData })
-                    }
+                scale: Qt.vector3d(1.0, 1.0, 1.0)
+                
+                ModelSCar {
+                    id: modelS
+                    visible: window.carType === "ModelS"
+                    showDebug: window.showDebug
+                    frameData: sync.playing ? sync.currentFrameData : window.manualFrameData
+                }
+                
+                CybertruckCar {
+                    id: ct
+                    visible: window.carType === "Cybertruck"
+                    showDebug: window.showDebug
+                    frameData: sync.playing ? sync.currentFrameData : window.manualFrameData
                 }
             }
         }
         Model {
-            source: "#Rectangle"; scale: Qt.vector3d(100, 100, 1); eulerRotation: Qt.vector3d(-90, 0, 0); position: Qt.vector3d(0, -1, 0)
+            source: "#Rectangle"; scale: Qt.vector3d(100, 100, 1); eulerRotation: Qt.vector3d(-90, 0, 0); position: Qt.vector3d(0, 0, 0)
             materials: [ PrincipledMaterial { 
                 baseColor: window.envBrightness > 0.5 ? "#888888" : "#222222"
                 roughness: 0.6; metalness: 0.1 
             } ]
         }
-        DirectionalLight { eulerRotation: Qt.vector3d(-45, 45, 0); brightness: window.envBrightness * 2.5 } 
-        DirectionalLight { eulerRotation: Qt.vector3d(45, -135, 0); brightness: window.envBrightness * 1.5 }
+
+        // --- Sun / Main Lighting ---
+        DirectionalLight { 
+            id: sunLight
+            eulerRotation: Qt.vector3d(-60, 45, 0)
+            brightness: window.envBrightness > 0.5 ? 2.5 : 0.4
+            color: window.envBrightness > 0.5 ? "#ffffcc" : "#9999ff"
+            castsShadow: window.envBrightness > 0.5
+            shadowMapQuality: DirectionalLight.ShadowMapQualityHigh
+            shadowBias: 0.5
+        }
+        
+        // Simplified fill lights (Shader handles side visibility)
+        DirectionalLight { eulerRotation: Qt.vector3d(-45, 45, 0); brightness: window.envBrightness * 1.0; color: "white" } 
+        DirectionalLight { eulerRotation: Qt.vector3d(0, 90, 0); brightness: window.envBrightness * 0.4; color: "white" }
+        DirectionalLight { eulerRotation: Qt.vector3d(0, -90, 0); brightness: window.envBrightness * 0.4; color: "white" }
+
+
+        // Night-time rim lighting to make CT silhouette visible
+        DirectionalLight { 
+            eulerRotation: Qt.vector3d(-10, 180, 0)
+            brightness: window.envBrightness > 0.5 ? 0.0 : 1.5
+            color: "#444466"
+        }
     }
 
     MouseArea {
@@ -185,7 +214,7 @@ Window {
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: 60; height: 40
                     model: ["S", "CT"]
-                    onActivated: window.carType = (index === 0 ? "ModelS" : "Cybertruck")
+                    onActivated: (index) => { window.carType = (index === 0 ? "ModelS" : "Cybertruck") }
                 }
             }
             Column {
@@ -244,13 +273,15 @@ Window {
         }
     }
 
+    property var activeCar: carType === "ModelS" ? modelS : ct
+
     Item {
         anchors.fill: parent; visible: window.showDebug; z: 210
         Repeater {
-            model: carLoader.item ? carLoader.item.markerModel : []
+            model: activeCar ? activeCar.markerModel : []
             Label {
                 text: modelData.ch; color: "white"; font.bold: true; font.pixelSize: 16
-                property var scenePos: (carLoader.item && modelData) ? carLoader.item.mapPositionToScene(modelData.pos) : Qt.vector3d(0,0,0)
+                property var scenePos: (activeCar && modelData) ? activeCar.mapPositionToScene(modelData.pos) : Qt.vector3d(0,0,0)
                 property var screenPos: (view && scenePos) ? view.mapFrom3DScene(scenePos) : Qt.vector3d(0,0,0)
                 x: screenPos.x - width/2; y: screenPos.y - height/2
                 background: Rectangle { color: "#aa000000"; radius: 4 }

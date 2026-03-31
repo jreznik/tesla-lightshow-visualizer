@@ -63,14 +63,31 @@ Node {
         }
     }
 
-    PrincipledMaterial { id: mat_Body; baseColor: "#888888"; metalness: 0.9; roughness: 0.1 }
-    PrincipledMaterial { id: mat_Black; baseColor: "black"; metalness: 0.2; roughness: 0.8 }
-    PrincipledMaterial { id: mat_Glass; baseColor: "#050505"; opacity: 0.9; metalness: 0.9; roughness: 0.1; alphaMode: PrincipledMaterial.Blend }
+    // Brushed Stainless Steel Look (Custom Shader)
+    BrushedSteelMaterial { 
+        id: mat_Body
+        baseColor: "#a0a0a0" // Brighter silvery base
+        metalness: 1.0
+        roughness: 0.2
+        reflectivity: 0.8
+        brushScale: 1500.0
+        brushStrength: 0.05
+    }
+    PrincipledMaterial { id: mat_Black; baseColor: "#111111"; metalness: 0.2; roughness: 0.8 }
+    // Non-transparent black tinted glass look
+    PrincipledMaterial { id: mat_Glass; baseColor: "#020202"; roughness: 0.01; metalness: 0.1; specularAmount: 1.0; clearcoatAmount: 1.0; opacity: 1.0 }
     PrincipledMaterial { id: mat_Wheel; baseColor: "#111111"; metalness: 0.5; roughness: 0.5 }
 
-    PrincipledMaterial { id: mat_Front_Bar; lighting: PrincipledMaterial.NoLighting; baseColor: getVal(0)>0?"white":"#222222"; emissiveFactor: Qt.vector3d(getVal(0)*5, getVal(0)*5, getVal(0)*5) }
-    PrincipledMaterial { id: mat_Offroad_Bar; lighting: PrincipledMaterial.NoLighting; baseColor: getVal(6)>0?"white":"#222222"; emissiveFactor: Qt.vector3d(getVal(6)*10, getVal(6)*10, getVal(6)*10) }
-    PrincipledMaterial { id: mat_Rear_Bar; lighting: PrincipledMaterial.NoLighting; baseColor: getVal(24)>0?"red":"#330000"; emissiveFactor: Qt.vector3d(getVal(24)*10, 0, 0) }
+    // Cybertruck specific light materials
+    PrincipledMaterial { id: mat_Front_Bar; lighting: PrincipledMaterial.NoLighting; baseColor: (getVal(4)>0||getVal(5)>0)?"white":"#222222"; emissiveFactor: Qt.vector3d(Math.max(getVal(4),getVal(5))*10, Math.max(getVal(4),getVal(5))*10, Math.max(getVal(4),getVal(5))*10) }
+    PrincipledMaterial { id: mat_Main_Beam; lighting: PrincipledMaterial.NoLighting; baseColor: (getVal(0)>0||getVal(1)>0||getVal(2)>0||getVal(3)>0)?"white":"#111111"; emissiveFactor: Qt.vector3d(Math.max(getVal(0),getVal(1),getVal(2),getVal(3))*15, Math.max(getVal(0),getVal(1),getVal(2),getVal(3))*15, Math.max(getVal(0),getVal(1),getVal(2),getVal(3))*15) }
+    PrincipledMaterial { id: mat_Offroad_Bar; lighting: PrincipledMaterial.NoLighting; baseColor: getVal(6)>0?"white":"#222222"; emissiveFactor: Qt.vector3d(getVal(6)*20, getVal(6)*20, getVal(6)*20) }
+    PrincipledMaterial { id: mat_Rear_Bar; lighting: PrincipledMaterial.NoLighting; baseColor: (getVal(24)>0||getVal(25)>0||getVal(26)>0)?"red":"#330000"; emissiveFactor: Qt.vector3d(Math.max(getVal(24),getVal(25),getVal(26))*15, 0, 0) }
+    
+    PrincipledMaterial { id: mat_L_Turn; lighting: PrincipledMaterial.NoLighting; baseColor: getVal(12)>0?"orange":"#221100"; emissiveFactor: Qt.vector3d(getVal(12)*30, getVal(12)*12, 0) }
+    PrincipledMaterial { id: mat_R_Turn; lighting: PrincipledMaterial.NoLighting; baseColor: getVal(13)>0?"orange":"#221100"; emissiveFactor: Qt.vector3d(getVal(13)*30, getVal(13)*12, 0) }
+    PrincipledMaterial { id: mat_Reverse; lighting: PrincipledMaterial.NoLighting; baseColor: getVal(27)>0?"white":"#222222"; emissiveFactor: Qt.vector3d(getVal(27)*15, getVal(27)*15, getVal(27)*15) }
+    PrincipledMaterial { id: mat_Bed_Light; lighting: PrincipledMaterial.NoLighting; baseColor: getVal(27)>0?"white":"#111111"; emissiveFactor: Qt.vector3d(getVal(27)*5, getVal(27)*5, getVal(27)*5) }
 
     Component {
         id: beamComponent
@@ -90,28 +107,64 @@ Node {
     }
 
     Node {
-        id: modelContainer
-        Model { source: "meshes/Cybertruck/body_mesh.mesh"; materials: [ mat_Body ] }
-        Model { source: "meshes/Cybertruck/wheels_mesh.mesh"; materials: [ mat_Wheel ] }
-        Model { source: "meshes/Cybertruck/windows_mesh.mesh"; materials: [ mat_Glass ] }
-        Model { source: "meshes/Cybertruck/lights_mesh.mesh"; materials: [ mat_Black ] }
+        id: ctContainer
+        // scale to match Model S footprint (1.76 to match, 2.11 to be 20% bigger)
+        scale: Qt.vector3d(2.11, 2.11, 2.11)
         
-        Model { source: "meshes/Cybertruck/ct_Front_Bar_mesh.mesh"; materials: [ mat_Front_Bar ] }
-        Model { source: "meshes/Cybertruck/ct_Offroad_Bar_mesh.mesh"; materials: [ mat_Offroad_Bar ] }
-        Model { source: "meshes/Cybertruck/ct_Rear_Bar_mesh.mesh"; materials: [ mat_Rear_Bar ] }
+        Node {
+            id: geometryCorrection
+            position: Qt.vector3d(0, 0.54, 0) // Shift bottom to 0
 
-        Loader { sourceComponent: beamComponent; x: 280; y: 100; z: 0; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(0) }); item.length = 200 } } 
-        Loader { sourceComponent: beamComponent; x: 100; y: 180; z: 0; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(6) }); item.length = 250 } } 
+            Model { source: "meshes/Cybertruck/body_mesh.mesh"; materials: [ mat_Body ] }
+            Model { source: "meshes/Cybertruck/wheels_mesh.mesh"; materials: [ mat_Wheel ] }
+            Model { source: "meshes/Cybertruck/windows_mesh.mesh"; materials: [ mat_Glass ] }
+            Model { source: "meshes/Cybertruck/lights_mesh.mesh"; materials: [ mat_Black ] }
+            Model { source: "meshes/Cybertruck/ct_Front_Bar_mesh.mesh"; materials: [ mat_Front_Bar ] }
+            Model { source: "meshes/Cybertruck/ct_Main_Beams_mesh.mesh"; materials: [ mat_Main_Beam ] }
+            Model { source: "meshes/Cybertruck/ct_Offroad_Bar_mesh.mesh"; materials: [ mat_Offroad_Bar ] }
+            Model { source: "meshes/Cybertruck/ct_Rear_Bar_mesh.mesh"; materials: [ mat_Rear_Bar ] }
 
-        SpotLight { position: Qt.vector3d(280, 100, 0); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(0)*15000; coneAngle: 40; color: "white" }
-        SpotLight { position: Qt.vector3d(100, 180, 0); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(6)*25000; coneAngle: 30; color: "white" }
-        PointLight { position: Qt.vector3d(-265, 68, 0); brightness: getVal(24)*5000; color: "red" }
+            // --- Front Light Effects ---
+            // Main Beam (Channel 0/1)
+            Loader { sourceComponent: beamComponent; x: 280; y: 100; z: -110; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(0) }); item.length = 200 } } 
+            Loader { sourceComponent: beamComponent; x: 280; y: 100; z: 110; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(1) }); item.length = 200 } } 
+            SpotLight { position: Qt.vector3d(280, 100, -110); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(0)*15000; coneAngle: 40; color: "white" }
+            SpotLight { position: Qt.vector3d(280, 100, 110); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(1)*15000; coneAngle: 40; color: "white" }
+
+            // Offroad Light (Channel 6)
+            Loader { sourceComponent: beamComponent; x: 100; y: 180; z: 0; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(6) }); item.length = 250 } } 
+            SpotLight { position: Qt.vector3d(100, 180, 0); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(6)*25000; coneAngle: 30; color: "white" }
+
+            // Turn Signals (Channel 12/13)
+            PointLight { position: Qt.vector3d(285, 100, -130); brightness: getVal(12)*5000; color: "orange" }
+            PointLight { position: Qt.vector3d(285, 100, 130); brightness: getVal(13)*5000; color: "orange" }
+
+            // --- Rear Light Effects ---
+            // Brake/Tail (Channel 24/25/26)
+            PointLight { position: Qt.vector3d(-265, 68, 0); brightness: Math.max(getVal(24), getVal(25), getVal(26))*8000; color: "red" }
+
+            // Reverse Lights (Channel 27)
+            PointLight { position: Qt.vector3d(-260, 68, -100); brightness: getVal(27)*4000; color: "white" }
+            PointLight { position: Qt.vector3d(-260, 68, 100); brightness: getVal(27)*4000; color: "white" }
+
+            // Cabin light for night visibility
+            PointLight { 
+                position: Qt.vector3d(-50, 140, 0)
+                brightness: window.envBrightness > 0.5 ? 0.0 : 500.0
+                color: "#e0e0ff"
+                linearFade: 1.0
+            }
+        }
     }
 
     readonly property var markerModel: [
-        { ch: 0, pos: Qt.vector3d(280, 100, 0), c: "white" },
+        { ch: 0, pos: Qt.vector3d(280, 100, -110), c: "white" },
+        { ch: 1, pos: Qt.vector3d(280, 100, 110), c: "white" },
         { ch: 6, pos: Qt.vector3d(100, 180, 0), c: "white" },
-        { ch: 24, pos: Qt.vector3d(-265, 68, 0), c: "red" }
+        { ch: 12, pos: Qt.vector3d(285, 100, -130), c: "orange" },
+        { ch: 13, pos: Qt.vector3d(285, 100, 130), c: "orange" },
+        { ch: 24, pos: Qt.vector3d(-265, 68, 0), c: "red" },
+        { ch: 27, pos: Qt.vector3d(-260, 68, 0), c: "white" }
     ]
 
     Node {
@@ -119,7 +172,7 @@ Node {
         Repeater3D {
             model: carRoot.markerModel
             Node {
-                x: modelData.pos.x; y: modelData.pos.y; z: modelData.pos.z
+                position: Qt.vector3d(modelData.pos.x * 2.11, (modelData.pos.y + 0.54) * 2.11, modelData.pos.z * 2.11)
                 Model { source: "#Sphere"; scale: Qt.vector3d(0.1, 0.1, 0.1); materials: [ PrincipledMaterial { baseColor: getVal(modelData.ch) > 0 ? modelData.c : "gray"; emissiveFactor: getVal(modelData.ch) > 0 ? Qt.vector3d(2,2,2) : Qt.vector3d(0,0,0); lighting: PrincipledMaterial.NoLighting } ] }
                 Model { source: "#Cube"; y: 40; scale: Qt.vector3d(0.05, 0.05, 0.05); materials: [ PrincipledMaterial { baseColor: "white"; lighting: PrincipledMaterial.NoLighting } ] }
             }

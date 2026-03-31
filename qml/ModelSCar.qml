@@ -65,7 +65,8 @@ Node {
 
     PrincipledMaterial { id: mat_Red; baseColor: "red"; metalness: 0.8; roughness: 0.2 }
     PrincipledMaterial { id: mat_Black; baseColor: "black"; metalness: 0.2; roughness: 0.8 }
-    PrincipledMaterial { id: mat_Glass; baseColor: "#050505"; opacity: 0.9; metalness: 0.9; roughness: 0.1; alphaMode: PrincipledMaterial.Blend }
+    // Non-transparent black tinted glass look
+    PrincipledMaterial { id: mat_Glass; baseColor: "#050505"; roughness: 0.05; metalness: 0.0; specularAmount: 1.0; clearcoatAmount: 1.0; opacity: 1.0 }
     PrincipledMaterial { id: mat_Wheel; baseColor: "#111111"; metalness: 0.5; roughness: 0.5 }
 
     PrincipledMaterial { id: mat_L_Outer; lighting: PrincipledMaterial.NoLighting; baseColor: getVal(0)>0?"white":"#222222"; emissiveFactor: Qt.vector3d(getVal(0)*2, getVal(0)*2, getVal(0)*2) }
@@ -106,76 +107,66 @@ Node {
     }
 
     Node {
-        id: modelContainer
-        Model { id: bodyModel; source:  "meshes/ModelS/body_mesh.mesh"; materials: [ mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red ] }
-        Model { source:  "meshes/ModelS/front_Outer_L_mesh.mesh"; materials: [ mat_L_Outer ] }
-        Model { source:  "meshes/ModelS/front_Outer_R_mesh.mesh"; materials: [ mat_R_Outer ] }
-        Model { source:  "meshes/ModelS/front_Inner_L_mesh.mesh"; materials: [ mat_L_Inner ] }
-        Model { source:  "meshes/ModelS/front_Inner_R_mesh.mesh"; materials: [ mat_R_Inner ] }
-        Model { source:  "meshes/ModelS/front_Sig_L_mesh.mesh"; materials: [ mat_L_Sig ] }
-        Model { source:  "meshes/ModelS/front_Sig_R_mesh.mesh"; materials: [ mat_R_Sig ] }
-        Model { source:  "meshes/ModelS/front_Turn_L_mesh.mesh"; materials: [ mat_L_Turn ] }
-        Model { source:  "meshes/ModelS/front_Turn_R_mesh.mesh"; materials: [ mat_R_Turn ] }
-        Model { source:  "meshes/ModelS/front_Fog_L_mesh.mesh"; materials: [ mat_L_Fog ] }
-        Model { source:  "meshes/ModelS/front_Fog_R_mesh.mesh"; materials: [ mat_R_Fog ] }
-        Model { source:  "meshes/ModelS/rear_Tail_L_mesh.mesh"; materials: [ mat_Rear_Tail ] }
-        Model { source:  "meshes/ModelS/rear_Tail_R_mesh.mesh"; materials: [ mat_Rear_Tail ] }
-        Model { source:  "meshes/ModelS/rear_Brake_L_mesh.mesh"; materials: [ mat_Rear_Brake ] }
-        Model { source:  "meshes/ModelS/rear_Brake_R_mesh.mesh"; materials: [ mat_Rear_Brake ] }
-        Model { id: wheelsModel; source:  "meshes/ModelS/wheels_mesh.mesh"; materials: [ mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel ] }
-        Model { id: topGlassModel; source:  "meshes/ModelS/windows_Top_mesh.mesh"; materials: [ mat_Glass ] }
-        Model { id: doorLFModel; source:  "meshes/ModelS/door_LF_mesh.mesh"; materials: [ mat_Glass, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
-        Model { id: doorRFModel; source:  "meshes/ModelS/door_RF_mesh.mesh"; materials: [ mat_Glass, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red ] }
-        Model { id: doorLRModel; source:  "meshes/ModelS/door_LR_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
-        Model { id: doorRRModel; source:  "meshes/ModelS/door_RR_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, Math.max(getVal(22),getVal(23))*10, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
-        Model { id: hoodModel; source:  "meshes/ModelS/hood_mesh.mesh"; materials: [ mat_Red ] }
-        Model { id: trunkModel; source:  "meshes/ModelS/trunk_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red ] }
-        Model { id: spoilerModel; source:  "meshes/ModelS/spoiler_mesh.mesh"; materials: [ mat_Black ] }
-        Model { id: windowLFModel; source:  "meshes/ModelS/window_LF_mesh.mesh"; materials: [ mat_Glass ] }
-        Model { id: windowRFModel; source:  "meshes/ModelS/window_RF_mesh.mesh"; materials: [ mat_Glass ] }
-        Model { id: windowLRModel; source:  "meshes/ModelS/window_LR_mesh.mesh"; materials: [ mat_Glass ] }
-        Model { id: windowRRModel; source:  "meshes/ModelS/window_RR_mesh.mesh"; materials: [ mat_Glass ] }
-        Model { id: chargeCapModel; source:  "meshes/ModelS/charge_Cap_mesh.mesh"; materials: [ mat_Red ] }
+        id: geometryCorrection
+        position: Qt.vector3d(-10.7, 1.57, 0)
+
+        Model { id: bodyModel; source: "meshes/ModelS/body_mesh.mesh"; materials: [ mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red ] }
+        Model { id: wheelsModel; source: "meshes/ModelS/wheels_mesh.mesh"; materials: [ mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel, mat_Wheel ] }
+        Model { id: topGlassModel; source: "meshes/ModelS/windows_Top_mesh.mesh"; materials: [ mat_Glass ] }
         
-        // PHYSICAL Side Repeaters
-        Model { id: physicalRepeaterL; source:  "meshes/ModelS/side_Repeater_L_mesh.mesh"; materials: [ mat_L_Repeat ] }
-        Model { id: physicalRepeaterR; source:  "meshes/ModelS/side_Repeater_R_mesh.mesh"; materials: [ mat_R_Repeat ] }
-
-        // --- Volumetric Rays (Origin at car front lenses) ---
-        Loader { sourceComponent: beamComponent; x: 32; y: 120; z: -260; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(0) }); item.length = 150; item.col = "white" } } 
-        Loader { sourceComponent: beamComponent; x: 32; y: 120; z: 260; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(1) }); item.length = 150; item.col = "white" } } 
-        Loader { sourceComponent: beamComponent; x: 22; y: 120; z: -220; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(2) }); item.length = 300; item.col = "white" } } 
-        Loader { sourceComponent: beamComponent; x: 22; y: 120; z: 220; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(3) }); item.length = 300; item.col = "white" } } 
-
-        // Repeater Rays
-        Loader { sourceComponent: beamComponent; x: -195; y: 155; z: -275; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(20) }); item.length = 20; item.col = "orange" } }
-        Loader { sourceComponent: beamComponent; x: -195; y: 155; z: 275; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(21) }); item.length = 20; item.col = "orange" } }
-
-        // --- Real SpotLights ---
-        SpotLight { position: Qt.vector3d(32, 120, -260); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(0)*10000; coneAngle: 30; color: "white"; castsShadow: true }
-        SpotLight { position: Qt.vector3d(32, 120, 260); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(1)*10000; coneAngle: 30; color: "white"; castsShadow: true }
-        SpotLight { position: Qt.vector3d(22, 120, -220); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(2)*20000; coneAngle: 15; color: "white" }
-        SpotLight { position: Qt.vector3d(22, 120, 220); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(3)*20000; coneAngle: 15; color: "white" }
+        Model { source: "meshes/ModelS/front_Outer_L_mesh.mesh"; materials: [ mat_L_Outer ] }
+        Model { source: "meshes/ModelS/front_Outer_R_mesh.mesh"; materials: [ mat_R_Outer ] }
+        Model { source: "meshes/ModelS/front_Inner_L_mesh.mesh"; materials: [ mat_L_Inner ] }
+        Model { source: "meshes/ModelS/front_Inner_R_mesh.mesh"; materials: [ mat_R_Inner ] }
+        Model { source: "meshes/ModelS/front_Sig_L_mesh.mesh"; materials: [ mat_L_Sig ] }
+        Model { source: "meshes/ModelS/front_Sig_R_mesh.mesh"; materials: [ mat_R_Sig ] }
+        Model { source: "meshes/ModelS/front_Turn_L_mesh.mesh"; materials: [ mat_L_Turn ] }
+        Model { source: "meshes/ModelS/front_Turn_R_mesh.mesh"; materials: [ mat_R_Turn ] }
+        Model { source: "meshes/ModelS/front_Fog_L_mesh.mesh"; materials: [ mat_L_Fog ] }
+        Model { source: "meshes/ModelS/front_Fog_R_mesh.mesh"; materials: [ mat_R_Fog ] }
+        Model { source: "meshes/ModelS/rear_Tail_L_mesh.mesh"; materials: [ mat_Rear_Tail ] }
+        Model { source: "meshes/ModelS/rear_Tail_R_mesh.mesh"; materials: [ mat_Rear_Tail ] }
+        Model { source: "meshes/ModelS/rear_Brake_L_mesh.mesh"; materials: [ mat_Rear_Brake ] }
+        Model { source: "meshes/ModelS/rear_Brake_R_mesh.mesh"; materials: [ mat_Rear_Brake ] }
+        Model { id: doorLFModel; source: "meshes/ModelS/door_LF_mesh.mesh"; materials: [ mat_Glass, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
+        Model { id: doorRFModel; source: "meshes/ModelS/door_RF_mesh.mesh"; materials: [ mat_Glass, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red ] }
+        Model { id: doorLRModel; source: "meshes/ModelS/door_LR_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
+        Model { id: doorRRModel; source: "meshes/ModelS/door_RR_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, Math.max(getVal(22),getVal(23))*10, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red ] }
+        Model { id: hoodModel; source: "meshes/ModelS/hood_mesh.mesh"; materials: [ mat_Red ] }
+        Model { id: trunkModel; source: "meshes/ModelS/trunk_mesh.mesh"; materials: [ mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Black, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Red, mat_Black, mat_Red, mat_Red, mat_Black, mat_Red ] }
+        Model { id: spoilerModel; source: "meshes/ModelS/spoiler_mesh.mesh"; materials: [ mat_Black ] }
+        Model { id: windowLFModel; source: "meshes/ModelS/window_LF_mesh.mesh"; materials: [ mat_Glass ] }
+        Model { id: windowRFModel; source: "meshes/ModelS/window_RF_mesh.mesh"; materials: [ mat_Glass ] }
+        Model { id: windowLRModel; source: "meshes/ModelS/window_LR_mesh.mesh"; materials: [ mat_Glass ] }
+        Model { id: windowRRModel; source: "meshes/ModelS/window_RR_mesh.mesh"; materials: [ mat_Glass ] }
+        Model { id: chargeCapModel; source: "meshes/ModelS/charge_Cap_mesh.mesh"; materials: [ mat_Red ] }
         
-        // Glows
-        PointLight { position: Qt.vector3d(30, 150, -260); brightness: getVal(12)*600; color: "orange" }
-        PointLight { position: Qt.vector3d(30, 150, 260); brightness: getVal(13)*600; color: "orange" }
-        PointLight { position: Qt.vector3d(0, 50, -230); brightness: getVal(14)*3000; color: "white" }
-        PointLight { position: Qt.vector3d(0, 50, 230); brightness: getVal(15)*3000; color: "white" }
-        PointLight { position: Qt.vector3d(-195, 155, -275); brightness: getVal(20)*400; color: "orange" }
-        PointLight { position: Qt.vector3d(-195, 155, 275); brightness: getVal(21)*400; color: "orange" }
-        PointLight { position: Qt.vector3d(-950, 150, 0); brightness: getVal(24)*3750; color: "red" }
+        Model { id: physicalRepeaterL; source: "meshes/ModelS/side_Repeater_L_mesh.mesh"; materials: [ mat_L_Repeat ] }
+        Model { id: physicalRepeaterR; source: "meshes/ModelS/side_Repeater_R_mesh.mesh"; materials: [ mat_R_Repeat ] }
+
+        Loader { sourceComponent: beamComponent; x: 482; y: 120; z: -180; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(0) }); item.length = 150; item.col = "white" } } 
+        Loader { sourceComponent: beamComponent; x: 482; y: 120; z: 180; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(1) }); item.length = 150; item.col = "white" } } 
+        Loader { sourceComponent: beamComponent; x: 472; y: 120; z: -140; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(2) }); item.length = 300; item.col = "white" } } 
+        Loader { sourceComponent: beamComponent; x: 472; y: 120; z: 140; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(3) }); item.length = 300; item.col = "white" } } 
+
+        Loader { sourceComponent: beamComponent; x: 255; y: 155; z: -195; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(20) }); item.length = 20; item.col = "orange" } }
+        Loader { sourceComponent: beamComponent; x: 255; y: 155; z: 195; onLoaded: { item.intensity = Qt.binding(function(){ return getVal(21) }); item.length = 20; item.col = "orange" } }
+
+        SpotLight { position: Qt.vector3d(482, 120, -180); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(0)*10000; coneAngle: 30; color: "white" }
+        SpotLight { position: Qt.vector3d(482, 120, 180); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(1)*10000; coneAngle: 30; color: "white" }
+        SpotLight { position: Qt.vector3d(472, 120, -140); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(2)*20000; coneAngle: 15; color: "white" }
+        SpotLight { position: Qt.vector3d(472, 120, 140); eulerRotation: Qt.vector3d(0, -90, 0); brightness: getVal(3)*20000; coneAngle: 15; color: "white" }
+        
+        PointLight { position: Qt.vector3d(480, 150, -210); brightness: getVal(12)*600; color: "orange" }
+        PointLight { position: Qt.vector3d(480, 150, 210); brightness: getVal(13)*600; color: "orange" }
+        PointLight { position: Qt.vector3d(-500, 150, 0); brightness: getVal(24)*3750; color: "red" }
     }
 
     readonly property var markerModel: [
-        { ch: 0, pos: Qt.vector3d(50, 120, -260), c: "white" }, { ch: 1, pos: Qt.vector3d(50, 120, 260), c: "white" },
-        { ch: 2, pos: Qt.vector3d(40, 120, -220), c: "white" }, { ch: 3, pos: Qt.vector3d(40, 120, 220), c: "white" },
-        { ch: 4, pos: Qt.vector3d(30, 150, -230), c: "cyan" }, { ch: 5, pos: Qt.vector3d(30, 150, 230), c: "cyan" },
-        { ch: 12, pos: Qt.vector3d(30, 150, -290), c: "orange" }, { ch: 13, pos: Qt.vector3d(30, 150, 290), c: "orange" },
-        { ch: 14, pos: Qt.vector3d(0, 50, -260), c: "white" }, { ch: 15, pos: Qt.vector3d(0, 50, 260), c: "white" },
-        { ch: 20, pos: Qt.vector3d(-195, 155, -275), c: "orange" }, { ch: 21, pos: Qt.vector3d(-195, 155, 275), c: "orange" },
-        { ch: 22, pos: Qt.vector3d(-930, 150, -260), c: "orange" }, { ch: 23, pos: Qt.vector3d(-930, 150, 260), c: "orange" },
-        { ch: 24, pos: Qt.vector3d(-950, 160, 0), c: "red" }
+        { ch: 0, pos: Qt.vector3d(500, 120, -180), c: "white" }, { ch: 1, pos: Qt.vector3d(500, 120, 180), c: "white" },
+        { ch: 2, pos: Qt.vector3d(490, 120, -140), c: "white" }, { ch: 3, pos: Qt.vector3d(490, 120, 140), c: "white" },
+        { ch: 12, pos: Qt.vector3d(480, 150, -210), c: "orange" }, { ch: 13, pos: Qt.vector3d(480, 150, 210), c: "orange" },
+        { ch: 24, pos: Qt.vector3d(-500, 160, 0), c: "red" }
     ]
 
     Node {
@@ -183,7 +174,7 @@ Node {
         Repeater3D {
             model: carRoot.markerModel
             Node {
-                x: modelData.pos.x; y: modelData.pos.y; z: modelData.pos.z
+                position: Qt.vector3d(modelData.pos.x - 10.7, modelData.pos.y + 1.57, modelData.pos.z)
                 Model { source: "#Sphere"; scale: Qt.vector3d(0.1, 0.1, 0.1); materials: [ PrincipledMaterial { baseColor: getVal(modelData.ch) > 0 ? modelData.c : "gray"; emissiveFactor: getVal(modelData.ch) > 0 ? Qt.vector3d(2,2,2) : Qt.vector3d(0,0,0); lighting: PrincipledMaterial.NoLighting } ] }
                 Model { source: "#Cube"; y: 40; scale: Qt.vector3d(0.05, 0.05, 0.05); materials: [ PrincipledMaterial { baseColor: "white"; lighting: PrincipledMaterial.NoLighting } ] }
             }

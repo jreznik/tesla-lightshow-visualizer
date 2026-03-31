@@ -4,6 +4,8 @@
         <file alias="ModelSCar.qml">qml/ModelSCar.qml</file>
         <file alias="ModelSCarInternal.qml">qml/ModelSCarInternal.qml</file>
         <file alias="CybertruckCar.qml">qml/CybertruckCar.qml</file>
+        <file alias="BrushedSteelMaterial.qml">qml/BrushedSteelMaterial.qml</file>
+        <file alias="brushed_steel.frag">qml/brushed_steel.frag</file>
         
         <!-- Model S Maps -->
         <file alias="qml/maps/Arachnid_Wheel_AO.png">qml/maps/Arachnid_Wheel_AO.png</file>
@@ -57,6 +59,7 @@
         <file alias="meshes/Cybertruck/windows_mesh.mesh">qml/meshes/Cybertruck/windows_mesh.mesh</file>
         <file alias="meshes/Cybertruck/lights_mesh.mesh">qml/meshes/Cybertruck/lights_mesh.mesh</file>
         <file alias="meshes/Cybertruck/ct_Front_Bar_mesh.mesh">qml/meshes/Cybertruck/ct_Front_Bar_mesh.mesh</file>
+        <file alias="meshes/Cybertruck/ct_Main_Beams_mesh.mesh">qml/meshes/Cybertruck/ct_Main_Beams_mesh.mesh</file>
         <file alias="meshes/Cybertruck/ct_Offroad_Bar_mesh.mesh">qml/meshes/Cybertruck/ct_Offroad_Bar_mesh.mesh</file>
         <file alias="meshes/Cybertruck/ct_Rear_Bar_mesh.mesh">qml/meshes/Cybertruck/ct_Rear_Bar_mesh.mesh</file>
     </qresource>
