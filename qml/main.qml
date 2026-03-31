@@ -33,18 +33,42 @@ Window {
     property real carRotationZ: appSettings.carRotationZ
     property real cameraZ: appSettings.cameraZ
     property real envBrightness: appSettings.envBrightness
+    property int countdownValue: 0
     
     onCarTypeChanged: appSettings.carType = carType
     onCarRotationZChanged: appSettings.carRotationZ = carRotationZ
     onCameraZChanged: appSettings.cameraZ = cameraZ
     onEnvBrightnessChanged: appSettings.envBrightness = envBrightness
 
+    function startShowWithCountdown() {
+        if (sync.showName === "") return
+        sync.stop()
+        countdownValue = 3
+        countdownTimer.start()
+    }
+
+    Timer {
+        id: countdownTimer
+        interval: 1000; repeat: true
+        onTriggered: {
+            countdownValue -= 1
+            if (countdownValue <= 0) {
+                stop()
+                sync.play()
+            }
+        }
+    }
+
     function loadShowFile(fseqPath) {
         let audioPathWav = fseqPath.replace(".fseq", ".wav")
         let audioPathMp3 = fseqPath.replace(".fseq", ".mp3")
         if (sync.loadShow(fseqPath, audioPathWav) || sync.loadShow(fseqPath, audioPathMp3)) {
             sync.position = 0
-            sync.play()
+            if (appSettings.autoloadShow) {
+                // If it's the very first startup autoload, maybe skip countdown or keep it?
+                // The user said "when file is loaded, autoplay", and now wants countdown.
+                startShowWithCountdown()
+            }
             appSettings.lastShowPath = fseqPath
             return true
         }
@@ -251,6 +275,35 @@ Window {
         }
     }
 
+    // --- OVERLAYS ---
+    
+    Column {
+        anchors.centerIn: parent
+        opacity: window.countdownValue > 0 ? 1.0 : 0.0
+        visible: opacity > 0
+        spacing: -10
+        z: 500
+        
+        Behavior on opacity { NumberAnimation { duration: 500 } }
+
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: window.countdownValue
+            color: window.envBrightness > 0.5 ? "black" : "white"
+            font.pixelSize: 120
+            font.bold: true
+            style: Text.Outline; styleColor: window.envBrightness > 0.5 ? "white" : "black"
+        }
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "seconds until showtime"
+            color: window.envBrightness > 0.5 ? "black" : "white"
+            font.pixelSize: 32
+            font.bold: true
+            style: Text.Outline; styleColor: window.envBrightness > 0.5 ? "white" : "black"
+        }
+    }
+
     MouseArea {
         anchors.fill: parent
         property real lastX: 0
@@ -359,8 +412,13 @@ Window {
                 Button { 
                     text: sync.playing ? "\u23F8" : "\u25B6"
                     font.pixelSize: 20; width: 60; height: 45
-                    enabled: sync.showName !== ""
-                    onClicked: { if (sync.playing) sync.pause(); else sync.play(); keyboardHandler.forceActiveFocus() }
+                    enabled: sync.showName !== "" && countdownValue <= 0
+                    onClicked: { 
+                        if (sync.playing) sync.pause(); 
+                        else if (sync.position === 0) startShowWithCountdown();
+                        else sync.play(); 
+                        keyboardHandler.forceActiveFocus() 
+                    }
                 }
                 Button { 
                     text: "\u25A0"
