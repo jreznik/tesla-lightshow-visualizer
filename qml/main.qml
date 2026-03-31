@@ -146,32 +146,42 @@ Window {
         Model {
             source: "#Rectangle"; scale: Qt.vector3d(100, 100, 1); eulerRotation: Qt.vector3d(-90, 0, 0); position: Qt.vector3d(0, 0, 0)
             materials: [ PrincipledMaterial { 
-                baseColor: window.envBrightness > 0.5 ? "#888888" : "#222222"
-                roughness: 0.6; metalness: 0.1 
+                baseColor: window.envBrightness > 0.5 ? "#888888" : "#111111"
+                roughness: 1.0; metalness: 0.0; specularAmount: 0.0
             } ]
         }
 
-        // --- Sun / Main Lighting ---
+        // --- Sun / Day Main Lighting ---
         DirectionalLight { 
             id: sunLight
             eulerRotation: Qt.vector3d(-60, 45, 0)
-            brightness: window.envBrightness > 0.5 ? 2.5 : 0.4
-            color: window.envBrightness > 0.5 ? "#ffffcc" : "#9999ff"
-            castsShadow: window.envBrightness > 0.5
+            brightness: window.envBrightness > 0.5 ? 2.5 : 0.0
+            color: "#ffffcc"
+            castsShadow: true
+            shadowMapQuality: DirectionalLight.ShadowMapQualityHigh
+            shadowBias: 0.5
+        }
+
+        // --- Moon / Night Main Lighting ---
+        DirectionalLight {
+            id: moonLight
+            eulerRotation: Qt.vector3d(-70, -45, 0)
+            brightness: window.envBrightness > 0.5 ? 0.0 : 1.2
+            color: "#aaaaff"
+            castsShadow: true
             shadowMapQuality: DirectionalLight.ShadowMapQualityHigh
             shadowBias: 0.5
         }
         
-        // Simplified fill lights (Shader handles side visibility)
+        // Simplified fill lights
         DirectionalLight { eulerRotation: Qt.vector3d(-45, 45, 0); brightness: window.envBrightness * 1.0; color: "white" } 
         DirectionalLight { eulerRotation: Qt.vector3d(0, 90, 0); brightness: window.envBrightness * 0.4; color: "white" }
         DirectionalLight { eulerRotation: Qt.vector3d(0, -90, 0); brightness: window.envBrightness * 0.4; color: "white" }
 
-
-        // Night-time rim lighting to make CT silhouette visible
+        // Night-time rim lighting
         DirectionalLight { 
             eulerRotation: Qt.vector3d(-10, 180, 0)
-            brightness: window.envBrightness > 0.5 ? 0.0 : 1.5
+            brightness: window.envBrightness > 0.5 ? 0.0 : 1.2
             color: "#444466"
         }
     }

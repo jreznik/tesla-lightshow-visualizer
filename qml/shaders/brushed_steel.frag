@@ -55,5 +55,5 @@ void MAIN() {
     reflection += vec3(0.8) * sun;
 
     // Apply reflection
-    EMISSIVE_COLOR = reflection * reflectivity * metalness * fresnel;
+    EMISSIVE_COLOR = reflection * reflectivity * metalness * fresnel * nightAlpha;
 }
