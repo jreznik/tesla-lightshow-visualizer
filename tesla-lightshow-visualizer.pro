@@ -34,4 +34,7 @@ desktop.files = org.jreznik.TeslaLightshowVisualizer.desktop
 icon.path = $$PREFIX/share/icons/hicolor/scalable/apps
 icon.files = assets/org.jreznik.TeslaLightshowVisualizer.svg
 
-INSTALLS += target desktop icon
+metainfo.path = $$PREFIX/share/metainfo
+metainfo.files = org.jreznik.TeslaLightshowVisualizer.metainfo.xml
+
+INSTALLS += target desktop icon metainfo

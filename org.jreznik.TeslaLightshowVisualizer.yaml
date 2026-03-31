@@ -10,12 +10,13 @@ finish-args:
   - --device=dri
   - --socket=pulseaudio
   - --share=network
-  - --filesystem=home # Needed to load .fseq and .mp3 files from user home
+  - --filesystem=home
 modules:
   - name: tesla-lightshow-visualizer
     buildsystem: simple
     build-commands:
-      - qmake6 PREFIX=/app
+      - make clean || true
+      - /usr/bin/qmake6 PREFIX=/app
       - make -j$FLATPAK_BUILDER_NPROC
       - make install INSTALL_ROOT=/
     sources:

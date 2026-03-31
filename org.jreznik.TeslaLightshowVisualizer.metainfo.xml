@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.jreznik.TeslaLightshowVisualizer</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>Tesla Lightshow Visualizer</name>
+  <summary>High-fidelity 3D visualizer for Tesla custom lightshows</summary>
+  <description>
+    <p>
+      Tesla Lightshow Visualizer is a 3D application designed to preview and test custom Tesla Lightshow (.fseq) files.
+      It features accurate 3D models of the Tesla Model S and Cybertruck with realistic lighting, smooth animations, and native ramping support.
+    </p>
+    <ul>
+      <li>Preview .fseq files synchronized with audio</li>
+      <li>Experimental support for Model S and Cybertruck</li>
+      <li>Custom shaders for realistic stainless steel finish on Cybertruck</li>
+      <li>Interactive 3D view with camera controls and Day/Night modes</li>
+      <li>Debug mode with physical light markers and manual channel testing</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">org.jreznik.TeslaLightshowVisualizer.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <caption>The visualizer showing a Tesla Model S in night mode</caption>
+      <image>https://raw.githubusercontent.com/jreznik/tesla-lightshow-visualizer/main/assets/icon.png</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://github.com/jreznik/tesla-lightshow-visualizer</url>
+  <developer_name>Jaroslav Řezník</developer_name>
+  <content_rating type="oars-1.1" />
+  <releases>
+    <release version="1.0.0" date="2026-03-31">
+      <description>
+        <p>Initial release with Model S and Cybertruck support.</p>
+      </description>
+    </release>
+  </releases>
+</component>
