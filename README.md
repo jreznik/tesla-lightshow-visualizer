@@ -43,10 +43,27 @@ This repository does not include the raw Tesla 3D models due to size and licensi
    ```
    *Note: Move the produced `.mesh` files into the respective `meshes/` folder for each car.*
 
-### 3. Build
+### 3. Build (Native)
 ```bash
 qmake6
 make -j$(nproc)
+```
+
+### 4. Build (Flatpak)
+If you prefer to build and run in a sandboxed environment:
+```bash
+# 1. Install dependencies (Fedora example)
+sudo dnf install flatpak-builder
+
+# 2. Add Flathub and install KDE SDK
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install flathub org.kde.Sdk//6.8 org.kde.Platform//6.8
+
+# 3. Build and install locally
+flatpak-builder --user --install --force-clean build-dir org.jreznik.TeslaLightshowVisualizer.yaml
+
+# 4. Run
+flatpak run org.jreznik.TeslaLightshowVisualizer
 ```
 
 ## Usage
