@@ -4,6 +4,7 @@ import QtQuick3D
 import QtQuick3D.Helpers
 import QtQuick.Dialogs
 import QtCore
+import Qt.labs.settings
 import Tesla.Lightshow
 import "cars/ModelS"
 import "cars/Cybertruck"
@@ -16,10 +17,26 @@ Window {
     title: qsTr("Tesla Lightshow 3D Visualizer")
     color: "black"
     
-    property string carType: "ModelS"
-    property real carRotationZ: 270
-    property real cameraZ: 3000 
-    property real envBrightness: 0.8
+    // PERSISTENCE
+    Settings {
+        id: appSettings
+        category: "Visualizer"
+        property string carType: "ModelS"
+        property real carRotationZ: 315
+        property real cameraZ: 2000
+        property real envBrightness: 1.0
+    }
+
+    property string carType: appSettings.carType
+    property real carRotationZ: appSettings.carRotationZ
+    property real cameraZ: appSettings.cameraZ
+    property real envBrightness: appSettings.envBrightness
+    
+    onCarTypeChanged: appSettings.carType = carType
+    onCarRotationZChanged: appSettings.carRotationZ = carRotationZ
+    onCameraZChanged: appSettings.cameraZ = cameraZ
+    onEnvBrightnessChanged: appSettings.envBrightness = envBrightness
+
     property bool showDebug: false
     property bool showFPS: false
     property string errorMessage: ""
@@ -205,42 +222,67 @@ Window {
     Rectangle {
         id: controlPanel
         anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.margins: 20
-        width: 80; height: 600; color: "#66000000"; radius: 15; border.color: "#33ffffff"; z: 200
+        width: 100; height: 620; color: "#66000000"; radius: 15; border.color: "#33ffffff"; z: 200
         
         Column {
-            anchors.fill: parent; anchors.margins: 10; spacing: 20
+            anchors.fill: parent; anchors.margins: 10; spacing: 15
             Column {
-                width: parent.width; spacing: 10
+                width: parent.width; spacing: 8
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: window.envBrightness > 0.5 ? "\u2600" : "\u263E" 
-                    font.pixelSize: 24; width: 60; height: 50
+                    font.pixelSize: 24; width: 70; height: 50
                     onClicked: window.envBrightness = (window.envBrightness > 0.5 ? 0.4 : 1.0)
                 }
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: window.visibility === Window.FullScreen ? "\u25A3" : "\u26F6" 
-                    font.pixelSize: 24; width: 60; height: 50
+                    font.pixelSize: 24; width: 70; height: 50
                     onClicked: window.visibility = (window.visibility === Window.FullScreen) ? Window.Windowed : Window.FullScreen
                 }
-                ComboBox {
+                Button {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: 60; height: 40
-                    model: ["S", "CT"]
-                    onActivated: (index) => { window.carType = (index === 0 ? "ModelS" : "Cybertruck") }
+                    text: "\u21BA" // Reset icon
+                    font.pixelSize: 24; width: 70; height: 50
+                    onClicked: { window.carRotationZ = 315; window.cameraZ = 2000; window.envBrightness = 1.0 }
                 }
             }
+
+            Rectangle { width: parent.width - 20; height: 1; color: "#33ffffff"; anchors.horizontalCenter: parent.horizontalCenter }
+
             Column {
-                width: parent.width; spacing: 15
+                width: parent.width; spacing: 8
+                Button {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Model S"
+                    font.pixelSize: 10; font.bold: true
+                    width: 80; height: 40; flat: window.carType !== "ModelS"
+                    highlighted: window.carType === "ModelS"
+                    onClicked: window.carType = "ModelS"
+                }
+                Button {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Cybertruck"
+                    font.pixelSize: 10; font.bold: true
+                    width: 80; height: 40; flat: window.carType !== "Cybertruck"
+                    highlighted: window.carType === "Cybertruck"
+                    onClicked: window.carType = "Cybertruck"
+                }
+            }
+
+            Rectangle { width: parent.width - 20; height: 1; color: "#33ffffff"; anchors.horizontalCenter: parent.horizontalCenter }
+
+            Column {
+                width: parent.width; spacing: 10
                 Column {
-                    width: parent.width; spacing: 5
+                    width: parent.width; spacing: 2
                     Text { text: "ROT"; color: "white"; font.pixelSize: 10; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
-                    Slider { id: rotSlider; orientation: Qt.Vertical; from: 0; to: 360; value: window.carRotationZ % 360; height: 120; anchors.horizontalCenter: parent.horizontalCenter; onMoved: window.carRotationZ = value }
+                    Slider { id: rotSlider; orientation: Qt.Vertical; from: 0; to: 360; value: window.carRotationZ % 360; height: 100; anchors.horizontalCenter: parent.horizontalCenter; onMoved: window.carRotationZ = value }
                 }
                 Column {
-                    width: parent.width; spacing: 5
+                    width: parent.width; spacing: 2
                     Text { text: "ZOOM"; color: "white"; font.pixelSize: 10; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
-                    Slider { id: zoomSlider; orientation: Qt.Vertical; from: 1000; to: 5000; value: window.cameraZ; height: 120; anchors.horizontalCenter: parent.horizontalCenter; onMoved: window.cameraZ = value }
+                    Slider { id: zoomSlider; orientation: Qt.Vertical; from: 1000; to: 5000; value: window.cameraZ; height: 100; anchors.horizontalCenter: parent.horizontalCenter; onMoved: window.cameraZ = value }
                 }
             }
         }
