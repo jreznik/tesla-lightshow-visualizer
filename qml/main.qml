@@ -25,6 +25,8 @@ Window {
         property real carRotationZ: 315
         property real cameraZ: 2000
         property real envBrightness: 1.0
+        property bool autoloadShow: true
+        property string lastShowPath: ""
     }
 
     property string carType: appSettings.carType
@@ -36,6 +38,24 @@ Window {
     onCarRotationZChanged: appSettings.carRotationZ = carRotationZ
     onCameraZChanged: appSettings.cameraZ = cameraZ
     onEnvBrightnessChanged: appSettings.envBrightness = envBrightness
+
+    function loadShowFile(fseqPath) {
+        let audioPathWav = fseqPath.replace(".fseq", ".wav")
+        let audioPathMp3 = fseqPath.replace(".fseq", ".mp3")
+        if (sync.loadShow(fseqPath, audioPathWav) || sync.loadShow(fseqPath, audioPathMp3)) {
+            sync.position = 0
+            sync.play()
+            appSettings.lastShowPath = fseqPath
+            return true
+        }
+        return false
+    }
+
+    Component.onCompleted: {
+        if (appSettings.autoloadShow && appSettings.lastShowPath !== "") {
+            loadShowFile(appSettings.lastShowPath)
+        }
+    }
 
     property bool showDebug: false
     property bool showFPS: false
@@ -61,12 +81,7 @@ Window {
         nameFilters: ["FSEQ files (*.fseq)"]
         onAccepted: {
             let fseqPath = selectedFile.toString().replace("file://", "")
-            let audioPathWav = fseqPath.replace(".fseq", ".wav")
-            let audioPathMp3 = fseqPath.replace(".fseq", ".mp3")
-            if (sync.loadShow(fseqPath, audioPathWav) || sync.loadShow(fseqPath, audioPathMp3)) {
-                sync.position = 0
-                sync.play()
-            } else {
+            if (!loadShowFile(fseqPath)) {
                 errorMessage = "FAILED TO LOAD LIGHTSHOW. ENSURE THE .FSEQ FILE IS VALID AND A MATCHING .MP3/.WAV EXISTS."
                 errorDialog.open()
             }
@@ -300,30 +315,52 @@ Window {
     }
 
     Rectangle {
-        anchors.bottom: parent.bottom; width: parent.width; height: 100; color: "#33000000"; z: 230
+        id: playbackPanel
+        anchors.bottom: parent.bottom; anchors.horizontalCenter: parent.horizontalCenter; anchors.margins: 20
+        width: 900; height: 100; color: "#66000000"; radius: 15; border.color: "#33ffffff"; z: 230
+        
         Column {
-            anchors.centerIn: parent; spacing: 10
+            anchors.centerIn: parent; spacing: 8
             Row {
-                spacing: 10
+                anchors.horizontalCenter: parent.horizontalCenter; spacing: 15
                 Button { 
                     text: sync.playing ? "\u23F8" : "\u25B6"
-                    font.pixelSize: 18; width: 50; height: 40
+                    font.pixelSize: 20; width: 60; height: 45
                     enabled: sync.showName !== ""
                     onClicked: { if (sync.playing) sync.pause(); else sync.play(); keyboardHandler.forceActiveFocus() }
                 }
                 Button { 
                     text: "\u25A0"
-                    font.pixelSize: 18; width: 50; height: 40
+                    font.pixelSize: 20; width: 60; height: 45
                     enabled: sync.showName !== ""
                     onClicked: { sync.stop(); sync.position = 0; keyboardHandler.forceActiveFocus() }
                 }
-                Button { text: "Load Show"; height: 40; onClicked: { fileDialog.open(); keyboardHandler.forceActiveFocus() } }
+                Button { text: "Load Show"; height: 45; width: 120; onClicked: { fileDialog.open(); keyboardHandler.forceActiveFocus() } }
+                
+                Rectangle { width: 1; height: 35; color: "#33ffffff"; anchors.verticalCenter: parent.verticalCenter }
+
+                CheckBox {
+                    id: autoloadCheck
+                    text: "Autoload previous"
+                    height: 45
+                    checked: appSettings.autoloadShow
+                    onToggled: appSettings.autoloadShow = checked
+                    indicator: Rectangle {
+                        implicitWidth: 26; implicitHeight: 26; x: autoloadCheck.leftPadding; y: parent.height / 2 - height / 2; radius: 3; border.color: "#33ffffff"; color: "transparent"
+                        Rectangle { width: 14; height: 14; x: 6; y: 6; radius: 2; color: "white"; visible: autoloadCheck.checked }
+                    }
+                    contentItem: Text {
+                        text: parent.text
+                        font.pixelSize: 14; color: "white"
+                        verticalAlignment: Text.AlignVCenter; leftPadding: autoloadCheck.indicator.width + autoloadCheck.spacing
+                    }
+                }
             }
             Row {
                 spacing: 15; anchors.horizontalCenter: parent.horizontalCenter
-                Text { text: formatTime(sync.position); color: "white"; font.family: "Monospace"; font.pixelSize: 14; anchors.verticalCenter: parent.verticalCenter; opacity: sync.showName !== "" ? 1.0 : 0.3 }
-                Slider { width: 700; from: 0; to: sync.duration; value: sync.position; onMoved: sync.position = value; enabled: sync.showName !== "" }
-                Text { text: formatTime(sync.duration); color: "white"; font.family: "Monospace"; font.pixelSize: 14; anchors.verticalCenter: parent.verticalCenter; opacity: sync.showName !== "" ? 1.0 : 0.3 }
+                Text { text: formatTime(sync.position); color: "white"; font.family: "Monospace"; font.pixelSize: 16; anchors.verticalCenter: parent.verticalCenter; opacity: sync.showName !== "" ? 1.0 : 0.3 }
+                Slider { id: progressSlider; width: 650; from: 0; to: sync.duration; value: sync.position; onMoved: sync.position = value; enabled: sync.showName !== "" }
+                Text { text: formatTime(sync.duration); color: "white"; font.family: "Monospace"; font.pixelSize: 16; anchors.verticalCenter: parent.verticalCenter; opacity: sync.showName !== "" ? 1.0 : 0.3 }
             }
         }
     }
