@@ -29,7 +29,7 @@ target.path = /usr/bin
 }
 
 desktop.path = $$PREFIX/share/applications
-desktop.files = tesla-lightshow-visualizer.desktop
+desktop.files = org.jreznik.TeslaLightshowVisualizer.desktop
 
 icon.path = $$PREFIX/share/icons/hicolor/scalable/apps
 icon.files = assets/org.jreznik.TeslaLightshowVisualizer.svg
