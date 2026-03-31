@@ -30,6 +30,13 @@ Node {
         // Skipped property: source, reason: Failed to find texture at /home/jreznik/gemini/tesla-lightshow-visualizer/assets/Cybertruck_Premium_Wheel_AO_Dark.png
     }
     PrincipledMaterial {
+        id: lambert4SG_material
+        objectName: "lambert4SG"
+        baseColor: "#ff000000"
+        baseColorMap: cybertruck_Premium_Wheel_AO_Dark_png_texture
+        indexOfRefraction: 1
+    }
+    PrincipledMaterial {
         id: ct_Rear_Bar_Mtl_material
         objectName: "CT_Rear_Bar_Mtl"
         indexOfRefraction: 1
@@ -45,10 +52,8 @@ Node {
         indexOfRefraction: 1
     }
     PrincipledMaterial {
-        id: lambert4SG_material
-        objectName: "lambert4SG"
-        baseColor: "#ff000000"
-        baseColorMap: cybertruck_Premium_Wheel_AO_Dark_png_texture
+        id: ct_Main_Beams_Mtl_material
+        objectName: "CT_Main_Beams_Mtl"
         indexOfRefraction: 1
     }
     PrincipledMaterial {
@@ -332,6 +337,14 @@ Node {
                 lambert4SG_material,
                 blinn4SG_material,
                 lambert4SG_material
+            ]
+        }
+        Model {
+            id: ct_Main_Beams
+            objectName: "CT_Main_Beams"
+            source: "meshes/ct_Main_Beams_mesh.mesh"
+            materials: [
+                ct_Main_Beams_Mtl_material
             ]
         }
         Model {
