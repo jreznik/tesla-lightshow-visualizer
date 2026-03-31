@@ -1,0 +1,22 @@
+# Qt
+*.pro.user
+*.pro.user.*
+*.qmlc
+*.jsc
+*.moc
+*.obj
+*.o
+*.a
+*.so
+*.dll
+*.exe
+moc_*
+qrc_*
+ui_*
+Makefile
+*.app
+build-*/
+
+# Project specific
+tesla-lightshow-visualizer
+qml.qrc.cpp

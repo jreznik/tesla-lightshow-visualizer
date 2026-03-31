@@ -1,0 +1,1167 @@
+newmtl Arachnid21_Wheel_LFSG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Arachnid_Wheel_AO.png
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 4.31
+newmtl Arachnid21_Wheel_LFSG1
+illum 4
+Kd 0.06 0.06 0.06
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl BodySG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Exterior_AO.png
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 18.00
+newmtl BodySG1
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Exterior_AO.png
+Ni 1.00
+newmtl BodySG2
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Exterior_AO_Dark.png
+Ni 1.00
+newmtl BodySG3
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl BodySG4
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_Red_AO.png
+Ni 1.00
+newmtl LightsSG_Rear_Tail_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Fog_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Turn_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Tail_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Fog_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Turn_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Fog_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Turn_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Tail_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Fog_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Turn_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Turn_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Tail_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Turn_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Tail_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Tail_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Tail_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Tail_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Outer_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Inner_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Front_Sig_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Tail_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Tail_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_L
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Brake_R
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Reverse
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Rear_Other
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+newmtl LightsSG_Other
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lights_AO.png
+Ni 1.00
+Ks 0.92 0.92 0.92
+Ns 5.82
+
+newmtl Rear_Tail_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Rear_Brake_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Rear_Other_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Inner_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Outer_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Sig_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Fog_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Turn_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Rear_Tail_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Rear_Brake_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Rear_Other_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Inner_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Outer_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Sig_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Fog_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Turn_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Side_Repeater_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Side_Repeater_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Rear_Tail_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Rear_Brake_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Rear_Other_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Inner_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Outer_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Sig_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Fog_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Turn_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Rear_Tail_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Rear_Brake_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Rear_Other_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Inner_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Outer_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Sig_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Fog_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Front_Turn_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Side_Repeater_R_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
+
+newmtl Side_Repeater_L_Mtl
+Kd 0.0 0.0 0.0
+Ka 0.0 0.0 0.0
+Ks 0.5 0.5 0.5
+Ns 20
