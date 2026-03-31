@@ -20,3 +20,4 @@ build-*/
 # Project specific
 tesla-lightshow-visualizer
 qml.qrc.cpp
+visualizer_run.log
