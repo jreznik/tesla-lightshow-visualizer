@@ -1,0 +1,92 @@
+name: Build Multiplatform
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            qt_arch: gcc_64
+          - os: macos-latest
+            qt_arch: clang_64
+          - os: windows-latest
+            qt_arch: win64_msvc2022_64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.8.*'
+          arch: ${{ matrix.qt_arch }}
+          modules: 'qtquick3d qtmultimedia qtshadertools'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Download Raw Assets (Placeholder)
+        shell: bash
+        run: |
+          mkdir -p assets
+          # REPLACE THESE URLS WITH ACTUAL DOWNLOAD LINKS
+          # wget -O assets/ModelS.obj "YOUR_URL_HERE"
+          # wget -O assets/ModelS.mtl "YOUR_URL_HERE"
+          # wget -O assets/Cybertruck.obj "YOUR_URL_HERE"
+          # wget -O assets/Cybertruck.mtl "YOUR_URL_HERE"
+          
+          # For testing CI without models, we create dummy files (the build will fail later if balsam can't find them)
+          touch assets/ModelS.obj assets/ModelS.mtl assets/Cybertruck.obj assets/Cybertruck.mtl
+
+      - name: Patch Models
+        run: |
+          python3 tools/patch_obj.py
+          python3 tools/patch_ct.py
+
+      - name: Convert to Meshes (Balsam)
+        shell: bash
+        run: |
+          mkdir -p qml/cars/ModelS/meshes qml/cars/Cybertruck/meshes
+          balsam -o qml/cars/ModelS assets/ModelS_patched.obj
+          balsam -o qml/cars/Cybertruck assets/Cybertruck_patched.obj
+          # Balsam puts files in 'meshes' subfolder by default
+          cp qml/cars/ModelS/meshes/*.mesh qml/cars/ModelS/meshes/ || true
+          cp qml/cars/Cybertruck/meshes/*.mesh qml/cars/Cybertruck/meshes/ || true
+
+      - name: Build (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: |
+          mkdir build
+          cd build
+          qmake ..
+          nmake
+
+      - name: Build (Unix)
+        if: matrix.os != 'windows-latest'
+        run: |
+          mkdir build
+          cd build
+          qmake6 ..
+          make -j$(nproc || sysctl -n hw.ncpu)
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: TeslaVisualizer-${{ matrix.os }}
+          path: |
+            build/tesla-lightshow-visualizer
+            build/tesla-lightshow-visualizer.exe
+            build/tesla-lightshow-visualizer.app
