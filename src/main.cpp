@@ -8,6 +8,9 @@
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+    app.setOrganizationName("jreznik");
+    app.setOrganizationDomain("jreznik.org");
+    app.setApplicationName("TeslaLightshowVisualizer");
     app.setWindowIcon(QIcon("assets/icon.png"));
 
     QQmlApplicationEngine engine;

@@ -27,18 +27,53 @@ Window {
         property real envBrightness: 1.0
         property bool autoloadShow: true
         property string lastShowPath: ""
+        property bool showModeActive: true
     }
 
     property string carType: appSettings.carType
     property real carRotationZ: appSettings.carRotationZ
     property real cameraZ: appSettings.cameraZ
+    property real cameraY: 400
+    property real cameraPitch: -15
     property real envBrightness: appSettings.envBrightness
+    property bool showModeActive: appSettings.showModeActive
+    property int currentHeroShot: 0
     property int countdownValue: 0
-    
+
     onCarTypeChanged: appSettings.carType = carType
     onCarRotationZChanged: appSettings.carRotationZ = carRotationZ
     onCameraZChanged: appSettings.cameraZ = cameraZ
     onEnvBrightnessChanged: appSettings.envBrightness = envBrightness
+    onShowModeActiveChanged: appSettings.showModeActive = showModeActive
+
+    property var heroShots: [
+        { rot: 315, zoom: 2000, y: 300, pitch: -10 },
+        { rot: 135, zoom: 2500, y: 500, pitch: -20 },
+        { rot: 270, zoom: 2800, y: 200, pitch: -5 },
+        { rot: 0, zoom: 3500, y: 1500, pitch: -90 }
+    ]
+
+    function nextHeroShot() {
+        currentHeroShot = (currentHeroShot + 1) % heroShots.length
+        let shot = heroShots[currentHeroShot]
+        carRotationZ = shot.rot
+        cameraZ = shot.zoom
+        cameraY = shot.y
+        cameraPitch = shot.pitch
+    }
+
+    Timer {
+        id: showModeTimer
+        interval: 8000; repeat: true; running: window.showModeActive && sync.playing
+        onTriggered: nextHeroShot()
+    }
+
+    Timer {
+        id: orbitTimer
+        interval: 16; repeat: true; running: window.showModeActive && !sync.playing
+        onTriggered: window.carRotationZ += 0.1
+    }
+
 
     function startShowWithCountdown() {
         if (sync.showName === "") return
@@ -54,6 +89,10 @@ Window {
             countdownValue -= 1
             if (countdownValue <= 0) {
                 stop()
+                if (window.showModeActive) {
+                    window.currentHeroShot = -1
+                    window.nextHeroShot()
+                }
                 sync.play()
             }
         }
@@ -149,10 +188,11 @@ Window {
             if (event.key === Qt.Key_D) window.showDebug = !window.showDebug
             else if (event.key === Qt.Key_F) window.showFPS = !window.showFPS
             else if (event.key === Qt.Key_F11) window.visibility = (window.visibility === Window.FullScreen) ? Window.Windowed : Window.FullScreen
-            else if (event.key === Qt.Key_Left) rotationTimer.dir = -1
-            else if (event.key === Qt.Key_Right) rotationTimer.dir = 1
-            else if (event.key === Qt.Key_Up) zoomTimer.dir = -1
-            else if (event.key === Qt.Key_Down) zoomTimer.dir = 1
+            if (event.key === Qt.Key_Left) { window.showModeActive = false; rotationTimer.dir = -1 }
+            else if (event.key === Qt.Key_Right) { window.showModeActive = false; rotationTimer.dir = 1 }
+            else if (event.key === Qt.Key_Up) { window.showModeActive = false; zoomTimer.dir = -1 }
+            else if (event.key === Qt.Key_Down) { window.showModeActive = false; zoomTimer.dir = 1 }
+
             else if (window.showDebug) {
                 let ch = getChannelForKey(event.key)
                 if (ch !== -1) {
@@ -208,10 +248,21 @@ Window {
             glowEnabled: true; glowStrength: 1.5; glowBloom: 0.3; tonemapMode: SceneEnvironment.TonemapModeFilmic
             fog: Fog { enabled: true; color: window.envBrightness > 0.5 ? "skyblue" : "#020202"; density: 0.1; depthEnabled: true; depthNear: 100; depthFar: 5000 }
         }
-        PerspectiveCamera { id: camera; position: Qt.vector3d(0, 400, window.cameraZ); eulerRotation: Qt.vector3d(-15, 0, 0) }
+        PerspectiveCamera { 
+            id: camera; 
+            position: Qt.vector3d(0, window.cameraY, window.cameraZ); 
+            eulerRotation: Qt.vector3d(window.cameraPitch, 0, 0) 
+            
+            Behavior on position { Vector3dAnimation { duration: 1000; easing.type: Easing.InOutQuad } }
+            Behavior on eulerRotation { Vector3dAnimation { duration: 1000; easing.type: Easing.InOutQuad } }
+        }
         
         Node {
             eulerRotation: Qt.vector3d(0, window.carRotationZ, 0)
+            Behavior on eulerRotation { 
+                enabled: window.showModeActive
+                Vector3dAnimation { duration: 1000; easing.type: Easing.InOutQuad } 
+            }
             
             Node {
                 position: Qt.vector3d(0, 0, 0)
@@ -307,9 +358,9 @@ Window {
     MouseArea {
         anchors.fill: parent
         property real lastX: 0
-        onPressed: (mouse) => { lastX = mouse.x; keyboardHandler.forceActiveFocus() }
+        onPressed: (mouse) => { window.showModeActive = false; lastX = mouse.x; keyboardHandler.forceActiveFocus() }
         onPositionChanged: (mouse) => { let dx = mouse.x - lastX; window.carRotationZ += dx * 0.5; lastX = mouse.x }
-        onWheel: (wheel) => { let zoomDelta = -wheel.angleDelta.y * 2; window.cameraZ = Math.max(1000, Math.min(5000, window.cameraZ + zoomDelta)) }
+        onWheel: (wheel) => { window.showModeActive = false; let zoomDelta = -wheel.angleDelta.y * 2; window.cameraZ = Math.max(1000, Math.min(5000, window.cameraZ + zoomDelta)) }
     }
 
     Text {
@@ -345,7 +396,17 @@ Window {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "\u21BA" // Reset icon
                     font.pixelSize: 24; width: 70; height: 50
-                    onClicked: { window.carRotationZ = 315; window.cameraZ = 2000; window.envBrightness = 1.0 }
+                    onClicked: { 
+                        window.showModeActive = false
+                        window.carRotationZ = 315; window.cameraZ = 2000; window.cameraY = 400; window.cameraPitch = -15; window.envBrightness = 1.0 
+                    }
+                }
+                Button {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "\uD83C\uDFA5" // Movie camera icon
+                    font.pixelSize: 24; width: 70; height: 50
+                    highlighted: window.showModeActive
+                    onClicked: window.showModeActive = !window.showModeActive
                 }
             }
 
@@ -378,12 +439,12 @@ Window {
                 Column {
                     width: parent.width; spacing: 2
                     Text { text: "ROT"; color: "white"; font.pixelSize: 10; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
-                    Slider { id: rotSlider; orientation: Qt.Vertical; from: 0; to: 360; value: window.carRotationZ % 360; height: 100; anchors.horizontalCenter: parent.horizontalCenter; onMoved: window.carRotationZ = value }
+                    Slider { id: rotSlider; orientation: Qt.Vertical; from: 0; to: 360; value: window.carRotationZ % 360; height: 100; anchors.horizontalCenter: parent.horizontalCenter; onMoved: { window.showModeActive = false; window.carRotationZ = value } }
                 }
                 Column {
                     width: parent.width; spacing: 2
                     Text { text: "ZOOM"; color: "white"; font.pixelSize: 10; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
-                    Slider { id: zoomSlider; orientation: Qt.Vertical; from: 1000; to: 5000; value: window.cameraZ; height: 100; anchors.horizontalCenter: parent.horizontalCenter; onMoved: window.cameraZ = value }
+                    Slider { id: zoomSlider; orientation: Qt.Vertical; from: 1000; to: 5000; value: window.cameraZ; height: 100; anchors.horizontalCenter: parent.horizontalCenter; onMoved: { window.showModeActive = false; window.cameraZ = value } }
                 }
             }
         }
