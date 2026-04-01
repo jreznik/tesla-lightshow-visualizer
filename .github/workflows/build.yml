@@ -19,7 +19,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y flatpak flatpak-builder
-          sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          flatpak install --user -y flathub org.kde.Sdk//6.8 org.kde.Platform//6.8
 
       - name: Download and Extract Raw Assets
         shell: bash
@@ -39,8 +40,8 @@ jobs:
           manifest-path: org.jreznik.TeslaLightshowVisualizer.yaml
           cache: true
           branch: main
-          repository-url: https://flathub.org/repo/flathub.flatpakrepo
-          repository-name: flathub
+          # Since we pre-installed to --user, the action should pick it up
+          # We omit repo-url to force it to use local remotes
 
       - name: Upload Flatpak Bundle
         uses: actions/upload-artifact@v4
