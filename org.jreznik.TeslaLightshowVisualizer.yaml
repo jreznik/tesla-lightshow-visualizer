@@ -18,12 +18,12 @@ modules:
       # Pre-build: Patch and convert models
       - python3 tools/patch_obj.py
       - python3 tools/patch_ct.py
-      # Balsam creates a 'meshes' subfolder. We convert to a temp dir and move.
-      - mkdir -p /tmp/balsam_ms /tmp/balsam_ct
-      - balsam -platform offscreen -o /tmp/balsam_ms assets/ModelS_patched.obj
-      - balsam -platform offscreen -o /tmp/balsam_ct assets/Cybertruck_patched.obj
-      - find /tmp/balsam_ms -name "*.mesh" -exec cp -f {} qml/cars/ModelS/meshes/ \;
-      - find /tmp/balsam_ct -name "*.mesh" -exec cp -f {} qml/cars/Cybertruck/meshes/ \;
+      # Balsam creates a 'meshes' subfolder. We convert to a local dir and move.
+      - mkdir -p balsam_ms balsam_ct
+      - balsam -platform offscreen -o balsam_ms assets/ModelS_patched.obj
+      - balsam -platform offscreen -o balsam_ct assets/Cybertruck_patched.obj
+      - find balsam_ms -name "*.mesh" -exec cp -f {} qml/cars/ModelS/meshes/ \;
+      - find balsam_ct -name "*.mesh" -exec cp -f {} qml/cars/Cybertruck/meshes/ \;
       
       - /usr/bin/qmake6 PREFIX=/app
       - make -j$FLATPAK_BUILDER_NPROC
