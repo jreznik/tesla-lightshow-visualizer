@@ -19,41 +19,40 @@ void MAIN() {
     // Generate the "Brushed" texture
     vec2 brushUV = UV0 * vec2(brushScale, brushScale * brushFlow);
     float n = noise(brushUV);
-    
+
+    // Add more variation with different frequencies
+    float detailNoise = noise(UV0 * brushScale * 0.3) * 0.3;
+    float combinedNoise = n * 0.7 + detailNoise;
+
     // Perturb the Normal slightly for anisotropic highlights
     float scratch = (n - 0.5) * brushStrength;
     vec3 perturbedNormal = normalize(NORMAL + TANGENT * scratch);
-    
-    // Set PBR properties
-    BASE_COLOR = vec4(baseColor.rgb, 1.0);
-    METALNESS = metalness;
-    ROUGHNESS = clamp(roughness + (n * 0.05), 0.0, 1.0);
+
+    // Vary roughness based on noise for brushed steel appearance
+    // Keep it low for metallic shine that responds to scene lights
+    float roughnessVariation = combinedNoise * 0.05;
+
+    // Use the baseColor property with only ADDITIVE variation (no darkening)
+    vec3 steelColor = baseColor.rgb + vec3(combinedNoise * 0.03);
+
+    // Set PBR properties - these respond to scene lighting (sun/spotlights)
+    BASE_COLOR = vec4(steelColor, baseColor.a); // Preserve alpha
+    METALNESS = metalness; // High metalness makes it reflect lights properly
+    ROUGHNESS = clamp(roughness + roughnessVariation, 0.06, 0.20);
     NORMAL = perturbedNormal;
 
-    // FAKE REFLECTIONS (Matcap-like)
+    // Brighter ambient reflection to help visibility
     vec3 viewDir = normalize(VIEW_VECTOR);
     vec3 reflectDir = reflect(viewDir, perturbedNormal);
-    
-    // Gradient sky to make flat surfaces less "solid white"
-    // Silvery top, slightly darker horizon
-    vec3 skyTop = vec3(1.0, 1.0, 1.0);
-    vec3 skyHorizon = vec3(0.6, 0.6, 0.65);
-    vec3 groundColor = vec3(0.02, 0.02, 0.03);
-    
-    float horizonFactor = reflectDir.y * 0.5 + 0.5;
-    vec3 skyGradient = mix(skyHorizon, skyTop, pow(max(0.0, reflectDir.y), 0.5));
-    
-    // Mask by normal: surfaces pointing down should see ground
-    float normalMask = smoothstep(-0.4, 0.2, NORMAL.y);
-    vec3 reflection = mix(groundColor, skyGradient, horizonFactor * normalMask);
-    
-    // Fresnel-like effect: reflections are stronger at glancing angles
-    float fresnel = 0.1 + 0.9 * pow(1.0 - max(0.0, dot(NORMAL, viewDir)), 3.0);
-    
-    // Sharp sun highlight
-    float sun = pow(max(0.0, dot(reflectDir, normalize(vec3(0.5, 1.0, 0.5)))), 128.0);
-    reflection += vec3(0.8) * sun;
 
-    // Apply reflection
-    EMISSIVE_COLOR = reflection * reflectivity * metalness * fresnel * nightAlpha;
+    // Bright ambient environment for shiny steel
+    vec3 ambient = vec3(0.5, 0.52, 0.55);
+    float horizonFactor = reflectDir.y * 0.5 + 0.5;
+    vec3 ambientReflection = ambient * horizonFactor;
+
+    // Light fresnel edge glow
+    float fresnel = pow(1.0 - max(0.0, dot(perturbedNormal, viewDir)), 3.0);
+
+    // Bright emissive for shiny steel look
+    EMISSIVE_COLOR = ambientReflection * reflectivity * fresnel * 0.45 * nightAlpha;
 }

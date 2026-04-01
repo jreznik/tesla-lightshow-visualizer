@@ -65,15 +65,15 @@ Node {
     }
 
     // Brushed Stainless Steel Look (Custom Shader)
-    BrushedSteelMaterial { 
+    BrushedSteelMaterial {
         id: mat_Body
-        baseColor: "#a0a0a0"
+        baseColor: "#fafafa" // Very bright white silver/stainless steel
         metalness: 1.0
-        roughness: 0.2
-        reflectivity: 0.8
-        nightAlpha: window.envBrightness > 0.5 ? 1.0 : 0.3 // Dim reflections at night
+        roughness: 0.05 // Very shiny
+        reflectivity: 0.7
+        nightAlpha: window.envBrightness > 0.5 ? 1.0 : 1.0
         brushScale: 1500.0
-        brushStrength: 0.05
+        brushStrength: 0.015
     }
     PrincipledMaterial { id: mat_Black; baseColor: "#111111"; metalness: 0.2; roughness: 0.8 }
     // Non-transparent black tinted glass look

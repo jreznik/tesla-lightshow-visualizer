@@ -1,4 +1,4 @@
-QT += quick quick3d multimedia
+QT += quick quick3d multimedia shadertools
 
 CONFIG += c++17
 
@@ -16,6 +16,7 @@ RESOURCES += \
 
 win32: RC_ICONS = assets/icon.ico
 macx: ICON = assets/icon.svg
+macx: QMAKE_CXXFLAGS += -Wno-error=implicit-function-declaration
 
 # Vulkan support
 linux: LIBS += -lvulkan

@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick3D
 import QtQuick3D.Helpers
+import QtQuick3D.Effects
 import QtQuick.Dialogs
 import QtCore
 import Qt.labs.settings
@@ -63,17 +64,18 @@ Window {
     }
 
     // GUARANTEED VIEWPORT LOCK:
-    // We enforce X=0 and Yaw=0 in all automated shots to ensure car origin is always at screen center.
+    // Camera pitch calculated to point at car center (Y=100) from camera position
+    // pitch = -atan((cameraY - carY) / cameraZ) in degrees
     property var heroShots: [
-        { rot: 315, zoom: 2200, y: 400, pitch: -15 },      // 0: DEFAULT
-        { rot: 45,  zoom: 1800, y: 250, pitch: -10 },      // 1: Front
-        { rot: 135, zoom: 2500, y: 450, pitch: -20 },      // 2: Rear High
-        { rot: 225, zoom: 1800, y: 250, pitch: -12 },      // 3: Rear Side
-        { rot: 270, zoom: 2800, y: 200, pitch: -5 },       // 4: Side
-        { rot: 450, zoom: 3200, y: 1200, pitch: -45 },     // 5: DRONE
-        { rot: 675, zoom: 3800, y: 1500, pitch: -90 },     // 6: Top Down
-        { rot: 315, zoom: 1600, y: 150, pitch: -5 },       // 7: Front Low
-        { rot: 135, zoom: 1600, y: 150, pitch: -5 }        // 8: Rear Low
+        { rot: 315, zoom: 2200, y: 400, pitch: -8 },       // 0: DEFAULT (was -15)
+        { rot: 45,  zoom: 1800, y: 250, pitch: -5 },       // 1: Front (was -10)
+        { rot: 135, zoom: 2500, y: 450, pitch: -8 },       // 2: Rear High (was -20)
+        { rot: 225, zoom: 1800, y: 250, pitch: -5 },       // 3: Rear Side (was -12)
+        { rot: 270, zoom: 2800, y: 200, pitch: -2 },       // 4: Side (was -5)
+        { rot: 450, zoom: 3200, y: 1200, pitch: -20 },     // 5: DRONE (was -45)
+        { rot: 675, zoom: 3800, y: 1500, pitch: -22 },     // 6: Top Down (was -90)
+        { rot: 315, zoom: 1600, y: 150, pitch: -2 },       // 7: Front Low (was -5)
+        { rot: 135, zoom: 1600, y: 150, pitch: -2 }        // 8: Rear Low (was -5)
     ]
 
     function nextHeroShot() {
@@ -85,43 +87,100 @@ Window {
         }
         currentHeroShot = nextShot
         let shot = heroShots[currentHeroShot]
-        
-        // High energy triggers faster cuts and more "snap"
-        let isQuickCut = (currentEnergy > 0.35) || (Math.random() > 0.7)
-        shotTransitionGroup.duration = isQuickCut ? (400 + Math.random() * 400) : (2500 + Math.random() * 1000)
-        
-        // DYNAMIC CINEMATIC SWITCHING (Less frequent)
-        if (shotCount % 6 === 0) window.envBrightness = (window.envBrightness > 0.5 ? 0.4 : 1.0)
-        if (shotCount % 10 === 0) window.carType = (window.carType === "ModelS" ? "Cybertruck" : "ModelS")
+
+        // Energy-reactive transition speed (more toned down for high energy)
+        // High energy: 1000-1500ms (smooth)
+        // Medium energy: 1500-2300ms (smoother)
+        // Low energy: 2500-3500ms (slow, cinematic)
+        let energyLevel = Math.max(0.1, currentEnergy)
+        let baseDuration = 1000 + (1.0 - energyLevel) * 2500  // 1000-3500ms
+        let variance = energyLevel * 300  // Some variance
+        shotTransitionGroup.duration = baseDuration + (Math.random() - 0.5) * variance
+
+        // Use faster easing for high energy
+        if (energyLevel > 0.5) {
+            shotTransitionX.easing.type = Easing.OutQuad
+            shotTransitionY.easing.type = Easing.OutQuad
+            shotTransitionZ.easing.type = Easing.OutQuad
+            shotTransitionRot.easing.type = Easing.OutQuad
+            shotTransitionPitch.easing.type = Easing.OutQuad
+        } else {
+            shotTransitionX.easing.type = Easing.InOutSine
+            shotTransitionY.easing.type = Easing.InOutSine
+            shotTransitionZ.easing.type = Easing.InOutSine
+            shotTransitionRot.easing.type = Easing.InOutSine
+            shotTransitionPitch.easing.type = Easing.InOutSine
+        }
+
+        // DYNAMIC CINEMATIC SWITCHING (Energy-based)
+        if (shotCount % 5 === 0 && Math.random() > 0.3) {
+            window.envBrightness = (window.envBrightness > 0.5 ? 0.4 : 1.0)
+        }
+        if (shotCount % 8 === 0 && Math.random() > 0.5) {
+            window.carType = (window.carType === "ModelS" ? "Cybertruck" : "ModelS")
+        }
 
         // Apply targets
         shotTransitionY.to = shot.y; shotTransitionZ.to = shot.zoom
-        // Add random rotation variation for energy - keep it modest to ensure framing
-        shotTransitionRot.to = shot.rot + (Math.random() * 20 - 10)
+        driftTimer.targetY = shot.y  // Update drift target
+
+        // More rotation variation at high energy for dynamic feel
+        let rotVariation = 5 + (energyLevel * 10)  // 5-15 degree variation
+        shotTransitionRot.to = shot.rot + (Math.random() - 0.5) * rotVariation
+
         shotTransitionPitch.to = shot.pitch
         shotTransitionX.to = 0; shotTransitionYaw.to = 0
-        
+
         shotTransitionGroup.restart()
         lastCutTime = sync.position
     }
 
-    // Dynamic Director: Decisions based on energy and timing
+    // Dynamic Director: Energy-reactive cuts (toned down)
     Timer {
         id: directorTimer
         interval: 100; repeat: true; running: window.showModeActive && sync.playing
+        property real energyHistory: 0.0
+        property real peakEnergy: 0.0
+
         onTriggered: {
             updateEnergy()
             let timeSinceCut = sync.position - lastCutTime
-            
-            // Logic: 
-            // - Min 3s between cuts (unless massive energy peak)
-            // - Cut if energy > threshold (threshold drops as time passes)
-            // - Force cut at 10s
-            if (timeSinceCut > 3000) {
-                let threshold = 0.5 - (timeSinceCut / 20000.0) 
-                if (currentEnergy > threshold || timeSinceCut > 10000) {
-                    nextHeroShot()
-                }
+
+            // Track energy history for detecting changes
+            energyHistory = energyHistory * 0.9 + currentEnergy * 0.1
+            peakEnergy = Math.max(peakEnergy * 0.98, currentEnergy)
+
+            // Energy-based cut timing (toned down):
+            // High energy (>0.6): 2-4s between cuts
+            // Medium energy (0.3-0.6): 4-6s between cuts
+            // Low energy (<0.3): 6-10s between cuts
+
+            let minTime = 1800   // Absolute minimum (1.8s)
+            let maxTime = 10000  // Maximum for very quiet scenes
+
+            // Calculate dynamic timing based on energy
+            let energyFactor = Math.max(0.1, peakEnergy)
+            let idealCutTime = 2000 + (1.0 - energyFactor) * 6000  // 2s-8s range
+
+            // Energy spike detection for quicker cuts (much less sensitive)
+            let energySpike = (currentEnergy - energyHistory) > 0.5
+
+            if (timeSinceCut < minTime) return  // Absolute minimum
+
+            // Quick cut on massive energy spike (but not too quick)
+            if (energySpike && timeSinceCut > 3500) {
+                nextHeroShot()
+                return
+            }
+
+            // Dynamic threshold that adapts to energy level
+            let baseThreshold = 0.45 - (currentEnergy * 0.15)
+            let timeDecay = timeSinceCut / (idealCutTime * 2.0)
+            let threshold = baseThreshold - timeDecay
+
+            // High energy = more cuts, low energy = fewer cuts
+            if (currentEnergy > threshold || timeSinceCut > maxTime) {
+                nextHeroShot()
             }
         }
     }
@@ -137,18 +196,23 @@ Window {
         NumberAnimation { id: shotTransitionYaw; target: window; property: "cameraYaw"; duration: shotTransitionGroup.duration; easing.type: Easing.InOutSine }
     }
 
-    // Cinematic Drift: Constant energy-scaled movement
+    // Cinematic Drift: Energy-reactive movement (toned down)
     Timer {
         id: driftTimer
         interval: 16; repeat: true; running: window.showModeActive && sync.playing
+        property real targetY: 400  // Target Y from current shot
         onTriggered: {
             if (!shotTransitionGroup.running) {
-                // Energetic rotation based on current energy
-                let energyFactor = 0.15 + (window.currentEnergy * 0.6)
+                // Energetic rotation - subtle energy response
+                let energyFactor = 0.15 + (window.currentEnergy * 0.35)
                 window.carRotationZ += energyFactor
-                
+
+                // Subtle Y drift based on energy
                 let time = new Date().getTime() / 1000.0
-                window.cameraY += Math.sin(time * 0.5) * (energyFactor * 2)
+                let driftAmount = window.currentEnergy > 0.6 ? 20 : 10  // Modest drift
+                let driftSpeed = 0.4 + (window.currentEnergy * 0.6)  // Moderate oscillation
+                let drift = Math.sin(time * driftSpeed) * (energyFactor * 1.0)
+                window.cameraY = Math.max(targetY - driftAmount, Math.min(targetY + driftAmount, window.cameraY + drift))
             }
         }
     }
@@ -339,19 +403,31 @@ Window {
         id: view
         anchors.fill: parent
         camera: camera
-        environment: ExtendedSceneEnvironment {
+
+        // macOS Metal workaround: ExtendedSceneEnvironment glow is broken in Qt 6.11
+        // Use HDRBloomTonemap effect instead
+        environment: SceneEnvironment {
             clearColor: window.envBrightness > 0.5 ? "skyblue" : "#050505"
             backgroundMode: SceneEnvironment.Color
-            antialiasingMode: SceneEnvironment.SSAA; antialiasingQuality: SceneEnvironment.VeryHigh
-            glowEnabled: true; glowStrength: 1.5; glowBloom: 0.3; tonemapMode: SceneEnvironment.TonemapModeFilmic
-            fog: Fog { enabled: true; color: window.envBrightness > 0.5 ? "skyblue" : "#020202"; density: 0.1; depthEnabled: true; depthNear: 100; depthFar: 5000 }
+            antialiasingMode: SceneEnvironment.SSAA
+            antialiasingQuality: SceneEnvironment.VeryHigh
+            tonemapMode: SceneEnvironment.TonemapModeLinear
+
+            // HDR Bloom effect for light glow
+            effects: [
+                HDRBloomTonemap {
+                    gamma: 2.2
+                    exposure: 0.5
+                    bloomThreshold: 0.5
+                    blurFalloff: 2
+                    tonemappingLerp: 1.0
+                }
+            ]
         }
-        PerspectiveCamera { 
-            id: camera; 
-            position: Qt.vector3d(window.cameraX, window.cameraY, window.cameraZ); 
-            eulerRotation: Qt.vector3d(window.cameraPitch, window.cameraYaw, 0) 
-            
-            // Manual overrides move immediately, automated shots use the ParallelAnimation above
+        PerspectiveCamera {
+            id: camera
+            position: Qt.vector3d(window.cameraX, window.cameraY, window.cameraZ)
+            eulerRotation: Qt.vector3d(window.cameraPitch, window.cameraYaw, 0)
         }
         
         Node {
@@ -379,17 +455,17 @@ Window {
         }
         Model {
             source: "#Rectangle"; scale: Qt.vector3d(100, 100, 1); eulerRotation: Qt.vector3d(-90, 0, 0); position: Qt.vector3d(0, 0, 0)
-            materials: [ PrincipledMaterial { 
-                baseColor: window.envBrightness > 0.5 ? "#888888" : "#111111"
+            materials: [ PrincipledMaterial {
+                baseColor: window.envBrightness > 0.5 ? "#888888" : "#080808"
                 roughness: 1.0; metalness: 0.0; specularAmount: 0.0
             } ]
         }
 
         // --- Sun / Day Main Lighting ---
-        DirectionalLight { 
+        DirectionalLight {
             id: sunLight
             eulerRotation: Qt.vector3d(-60, 45, 0)
-            brightness: window.envBrightness > 0.5 ? 2.5 : 0.0
+            brightness: window.envBrightness > 0.5 ? 1.2 : 0.0
             color: "#ffffcc"
             castsShadow: true
             shadowMapQuality: DirectionalLight.ShadowMapQualityHigh
@@ -400,23 +476,19 @@ Window {
         DirectionalLight {
             id: moonLight
             eulerRotation: Qt.vector3d(-70, -45, 0)
-            brightness: window.envBrightness > 0.5 ? 0.0 : 1.2
+            brightness: window.envBrightness > 0.5 ? 0.0 : 0.4
             color: "#aaaaff"
             castsShadow: true
             shadowMapQuality: DirectionalLight.ShadowMapQualityHigh
             shadowBias: 0.5
         }
-        
-        // Simplified fill lights
-        DirectionalLight { eulerRotation: Qt.vector3d(-45, 45, 0); brightness: window.envBrightness * 1.0; color: "white" } 
-        DirectionalLight { eulerRotation: Qt.vector3d(0, 90, 0); brightness: window.envBrightness * 0.4; color: "white" }
-        DirectionalLight { eulerRotation: Qt.vector3d(0, -90, 0); brightness: window.envBrightness * 0.4; color: "white" }
 
-        // Night-time rim lighting
-        DirectionalLight { 
-            eulerRotation: Qt.vector3d(-10, 180, 0)
-            brightness: window.envBrightness > 0.5 ? 0.0 : 1.2
-            color: "#444466"
+        // Fill light - REDUCED TO 1 to stay under 4 DirectionalLight limit
+        // This allows PointLights and SpotLights from car models to work!
+        DirectionalLight {
+            eulerRotation: Qt.vector3d(-45, 45, 0)
+            brightness: window.envBrightness * 0.4
+            color: "white"
         }
     }
 
