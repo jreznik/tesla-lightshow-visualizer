@@ -19,6 +19,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y flatpak flatpak-builder
+          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
       - name: Download and Extract Raw Assets
         shell: bash
@@ -38,6 +39,8 @@ jobs:
           manifest-path: org.jreznik.TeslaLightshowVisualizer.yaml
           cache: true
           branch: main
+          repository-url: https://flathub.org/repo/flathub.flatpakrepo
+          repository-name: flathub
 
       - name: Upload Flatpak Bundle
         uses: actions/upload-artifact@v4
