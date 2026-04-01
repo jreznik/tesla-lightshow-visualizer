@@ -22,6 +22,7 @@ modules:
       - mkdir -p balsam_ms balsam_ct
       - balsam -platform offscreen -o balsam_ms assets/ModelS_patched.obj
       - balsam -platform offscreen -o balsam_ct assets/Cybertruck_patched.obj
+      - mkdir -p qml/cars/ModelS/meshes qml/cars/Cybertruck/meshes
       - find balsam_ms -name "*.mesh" -exec cp -f {} qml/cars/ModelS/meshes/ \;
       - find balsam_ct -name "*.mesh" -exec cp -f {} qml/cars/Cybertruck/meshes/ \;
       
