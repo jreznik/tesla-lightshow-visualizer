@@ -70,7 +70,7 @@ flatpak run org.jreznik.TeslaLightshowVisualizer
    ```
 3. Run the generated app bundle: `open tesla-lightshow-visualizer.app`
 
-#### **Windows**
+#### **Windows (Native)**
 1. Install **Qt 6.8+** using the Qt Online Installer (include **MSVC** or **MinGW** compiler).
 2. Open the **"Qt 6.x (MSVC/MinGW) Command Prompt"** from the Start Menu.
 3. Run:
@@ -81,6 +81,21 @@ flatpak run org.jreznik.TeslaLightshowVisualizer
    mingw32-make  :: If using MinGW
    ```
 4. Run `tesla-lightshow-visualizer.exe`.
+
+#### **Windows (Cross-compile from Fedora)**
+If you are on Fedora Linux, you can easily cross-compile for Windows:
+1. Install MinGW Qt6 packages:
+   ```bash
+   sudo dnf install mingw64-gcc-c++ mingw64-qt6-qtbase mingw64-qt6-qtdeclarative \
+                    mingw64-qt6-qtquick3d mingw64-qt6-qtmultimedia mingw64-qt6-qtshadertools
+   ```
+2. Build using the Fedora MinGW wrapper:
+   ```bash
+   mkdir build-win64 && cd build-win64
+   mingw64-qmake-qt6 ..
+   make -j$(nproc)
+   ```
+3. The resulting `.exe` will be in the build directory.
 
 ## Usage
 - Click **Load Show** to select an `.fseq` file.

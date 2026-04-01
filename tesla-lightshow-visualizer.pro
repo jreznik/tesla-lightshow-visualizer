@@ -18,9 +18,6 @@ win32: RC_ICONS = assets/icon.ico
 macx: ICON = assets/icon.svg
 macx: QMAKE_CXXFLAGS += -Wno-error=implicit-function-declaration
 
-# Vulkan support
-linux: LIBS += -lvulkan
-
 DISTFILES += \
     qml/main.qml
 
