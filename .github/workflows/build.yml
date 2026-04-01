@@ -15,10 +15,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install flatpak-builder
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y flatpak-builder
+          sudo apt-get install -y flatpak flatpak-builder
+
+      - name: Configure Flatpak User Environment
+        run: |
+          # Setup a local user-mode flatpak environment to avoid permission issues
+          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak install --user -y flathub org.kde.Sdk//6.8 org.kde.Platform//6.8
 
       - name: Download and Extract Raw Assets
         shell: bash
@@ -32,15 +38,10 @@ jobs:
           rm assets.zip
 
       - name: Build Flatpak
-        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
-        with:
-          bundle: TeslaLightshowVisualizer.flatpak
-          manifest-path: org.jreznik.TeslaLightshowVisualizer.yaml
-          cache: true
-          restore-cache: true
-          repository-url: https://flathub.org/repo/flathub.flatpakrepo
-          repository-name: flathub
-          branch: main
+        run: |
+          # Use flatpak-builder directly with --user to ensure it uses the locally installed SDK
+          flatpak-builder --user --install-deps-from=flathub --force-clean --repo=repo build-dir org.jreznik.TeslaLightshowVisualizer.yaml
+          flatpak build-bundle repo TeslaLightshowVisualizer.flatpak org.jreznik.TeslaLightshowVisualizer
 
       - name: Upload Flatpak Bundle
         uses: actions/upload-artifact@v4
