@@ -22,8 +22,8 @@ modules:
       - mkdir -p /tmp/balsam_ms /tmp/balsam_ct
       - balsam -platform offscreen -o /tmp/balsam_ms assets/ModelS_patched.obj
       - balsam -platform offscreen -o /tmp/balsam_ct assets/Cybertruck_patched.obj
-      - cp -f /tmp/balsam_ms/meshes/*.mesh qml/cars/ModelS/meshes/
-      - cp -f /tmp/balsam_ct/meshes/*.mesh qml/cars/Cybertruck/meshes/
+      - find /tmp/balsam_ms -name "*.mesh" -exec cp -f {} qml/cars/ModelS/meshes/ \;
+      - find /tmp/balsam_ct -name "*.mesh" -exec cp -f {} qml/cars/Cybertruck/meshes/ \;
       
       - /usr/bin/qmake6 PREFIX=/app
       - make -j$FLATPAK_BUILDER_NPROC
