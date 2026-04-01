@@ -7,6 +7,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+jobs:
   build-linux:
     name: Build Flatpak (Linux)
     runs-on: ubuntu-latest
@@ -61,7 +62,7 @@ on:
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.7.2' # Using 6.7.2 which has stable index data
+          version: '6.7.2'
           arch: ${{ matrix.qt_arch }}
           modules: 'qtmultimedia qtquick3d qtshadertools'
 
