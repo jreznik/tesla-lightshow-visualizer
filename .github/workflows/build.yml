@@ -37,18 +37,16 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Download Raw Assets (Placeholder)
+      - name: Download and Extract Raw Assets
         shell: bash
         run: |
           mkdir -p assets
-          # REPLACE THESE URLS WITH ACTUAL DOWNLOAD LINKS
-          # wget -O assets/ModelS.obj "YOUR_URL_HERE"
-          # wget -O assets/ModelS.mtl "YOUR_URL_HERE"
-          # wget -O assets/Cybertruck.obj "YOUR_URL_HERE"
-          # wget -O assets/Cybertruck.mtl "YOUR_URL_HERE"
-          
-          # For testing CI without models, we create dummy files (the build will fail later if balsam can't find them)
-          touch assets/ModelS.obj assets/ModelS.mtl assets/Cybertruck.obj assets/Cybertruck.mtl
+          curl -L -o assets.zip "https://github.com/teslamotors/light-show/blob/master/xlights/tesla_xlights_show_folder.zip?raw=true"
+          unzip -j assets.zip "tesla_xlights_show_folder/Model_S/ModelS.obj" -d assets/
+          unzip -j assets.zip "tesla_xlights_show_folder/Model_S/ModelS.mtl" -d assets/
+          unzip -j assets.zip "tesla_xlights_show_folder/Cybertruck/Cybertruck.obj" -d assets/
+          unzip -j assets.zip "tesla_xlights_show_folder/Cybertruck/Cybertruck.mtl" -d assets/
+          rm assets.zip
 
       - name: Patch Models
         run: |
