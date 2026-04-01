@@ -34,10 +34,12 @@ Window {
     property real carRotationZ: appSettings.carRotationZ
     property real cameraZ: appSettings.cameraZ
     property real cameraY: 400
+    property real cameraX: 0
     property real cameraPitch: -15
+    property real cameraYaw: 0
     property real envBrightness: appSettings.envBrightness
     property bool showModeActive: appSettings.showModeActive
-    property int currentHeroShot: 0
+    property int currentHeroShot: -1
     property int countdownValue: 0
 
     onCarTypeChanged: appSettings.carType = carType
@@ -46,26 +48,109 @@ Window {
     onEnvBrightnessChanged: appSettings.envBrightness = envBrightness
     onShowModeActiveChanged: appSettings.showModeActive = showModeActive
 
+    property int shotCount: 0
+    property real currentEnergy: 0.0
+    property real lastCutTime: 0
+
+    // Calculate "Energy" (activity) of the current frame
+    function updateEnergy() {
+        if (!sync.playing || !sync.currentFrameData) { currentEnergy = 0; return; }
+        let sum = 0
+        for (let i = 0; i < 48; i++) sum += (sync.currentFrameData[i] || 0)
+        let energy = sum / (48 * 255.0)
+        // Smooth the energy
+        currentEnergy = currentEnergy * 0.8 + energy * 0.2
+    }
+
+    // GUARANTEED VIEWPORT LOCK:
+    // We enforce X=0 and Yaw=0 in all automated shots to ensure car origin is always at screen center.
     property var heroShots: [
-        { rot: 315, zoom: 2000, y: 300, pitch: -10 },
-        { rot: 135, zoom: 2500, y: 500, pitch: -20 },
-        { rot: 270, zoom: 2800, y: 200, pitch: -5 },
-        { rot: 0, zoom: 3500, y: 1500, pitch: -90 }
+        { rot: 315, zoom: 2200, y: 400, pitch: -15 },      // 0: DEFAULT
+        { rot: 45,  zoom: 1800, y: 250, pitch: -10 },      // 1: Front
+        { rot: 135, zoom: 2500, y: 450, pitch: -20 },      // 2: Rear High
+        { rot: 225, zoom: 1800, y: 250, pitch: -12 },      // 3: Rear Side
+        { rot: 270, zoom: 2800, y: 200, pitch: -5 },       // 4: Side
+        { rot: 450, zoom: 3200, y: 1200, pitch: -45 },     // 5: DRONE
+        { rot: 675, zoom: 3800, y: 1500, pitch: -90 },     // 6: Top Down
+        { rot: 315, zoom: 1600, y: 150, pitch: -5 },       // 7: Front Low
+        { rot: 135, zoom: 1600, y: 150, pitch: -5 }        // 8: Rear Low
     ]
 
     function nextHeroShot() {
-        currentHeroShot = (currentHeroShot + 1) % heroShots.length
+        shotCount++
+        // Randomly pick a shot, but not the same as current
+        let nextShot = currentHeroShot
+        while (nextShot === currentHeroShot) {
+            nextShot = Math.floor(Math.random() * heroShots.length)
+        }
+        currentHeroShot = nextShot
         let shot = heroShots[currentHeroShot]
-        carRotationZ = shot.rot
-        cameraZ = shot.zoom
-        cameraY = shot.y
-        cameraPitch = shot.pitch
+        
+        // High energy triggers faster cuts and more "snap"
+        let isQuickCut = (currentEnergy > 0.35) || (Math.random() > 0.7)
+        shotTransitionGroup.duration = isQuickCut ? (400 + Math.random() * 400) : (2500 + Math.random() * 1000)
+        
+        // DYNAMIC CINEMATIC SWITCHING (Less frequent)
+        if (shotCount % 6 === 0) window.envBrightness = (window.envBrightness > 0.5 ? 0.4 : 1.0)
+        if (shotCount % 10 === 0) window.carType = (window.carType === "ModelS" ? "Cybertruck" : "ModelS")
+
+        // Apply targets
+        shotTransitionY.to = shot.y; shotTransitionZ.to = shot.zoom
+        // Add random rotation variation for energy - keep it modest to ensure framing
+        shotTransitionRot.to = shot.rot + (Math.random() * 20 - 10)
+        shotTransitionPitch.to = shot.pitch
+        shotTransitionX.to = 0; shotTransitionYaw.to = 0
+        
+        shotTransitionGroup.restart()
+        lastCutTime = sync.position
     }
 
+    // Dynamic Director: Decisions based on energy and timing
     Timer {
-        id: showModeTimer
-        interval: 8000; repeat: true; running: window.showModeActive && sync.playing
-        onTriggered: nextHeroShot()
+        id: directorTimer
+        interval: 100; repeat: true; running: window.showModeActive && sync.playing
+        onTriggered: {
+            updateEnergy()
+            let timeSinceCut = sync.position - lastCutTime
+            
+            // Logic: 
+            // - Min 3s between cuts (unless massive energy peak)
+            // - Cut if energy > threshold (threshold drops as time passes)
+            // - Force cut at 10s
+            if (timeSinceCut > 3000) {
+                let threshold = 0.5 - (timeSinceCut / 20000.0) 
+                if (currentEnergy > threshold || timeSinceCut > 10000) {
+                    nextHeroShot()
+                }
+            }
+        }
+    }
+
+    ParallelAnimation {
+        id: shotTransitionGroup
+        property int duration: 2500
+        NumberAnimation { id: shotTransitionX; target: window; property: "cameraX"; duration: shotTransitionGroup.duration; easing.type: Easing.InOutSine }
+        NumberAnimation { id: shotTransitionY; target: window; property: "cameraY"; duration: shotTransitionGroup.duration; easing.type: Easing.InOutSine }
+        NumberAnimation { id: shotTransitionZ; target: window; property: "cameraZ"; duration: shotTransitionGroup.duration; easing.type: Easing.InOutSine }
+        NumberAnimation { id: shotTransitionRot; target: window; property: "carRotationZ"; duration: shotTransitionGroup.duration; easing.type: Easing.InOutSine }
+        NumberAnimation { id: shotTransitionPitch; target: window; property: "cameraPitch"; duration: shotTransitionGroup.duration; easing.type: Easing.InOutSine }
+        NumberAnimation { id: shotTransitionYaw; target: window; property: "cameraYaw"; duration: shotTransitionGroup.duration; easing.type: Easing.InOutSine }
+    }
+
+    // Cinematic Drift: Constant energy-scaled movement
+    Timer {
+        id: driftTimer
+        interval: 16; repeat: true; running: window.showModeActive && sync.playing
+        onTriggered: {
+            if (!shotTransitionGroup.running) {
+                // Energetic rotation based on current energy
+                let energyFactor = 0.15 + (window.currentEnergy * 0.6)
+                window.carRotationZ += energyFactor
+                
+                let time = new Date().getTime() / 1000.0
+                window.cameraY += Math.sin(time * 0.5) * (energyFactor * 2)
+            }
+        }
     }
 
     Timer {
@@ -78,8 +163,21 @@ Window {
     function startShowWithCountdown() {
         if (sync.showName === "") return
         sync.stop()
-        countdownValue = 3
-        countdownTimer.start()
+        
+        if (window.showModeActive) {
+            // RANDOM START SCENE
+            window.carType = (Math.random() > 0.5 ? "ModelS" : "Cybertruck")
+            window.envBrightness = (Math.random() > 0.5 ? 1.0 : 0.4)
+            
+            // RESET TO DEFAULT (Slightly safer zoom 2200)
+            window.carRotationZ = 315; window.cameraZ = 2200; window.cameraY = 400; 
+            window.cameraX = 0; window.cameraPitch = -15; window.cameraYaw = 0;
+            
+            countdownValue = 5
+            countdownTimer.start()
+        } else {
+            sync.play()
+        }
     }
 
     Timer {
@@ -250,19 +348,15 @@ Window {
         }
         PerspectiveCamera { 
             id: camera; 
-            position: Qt.vector3d(0, window.cameraY, window.cameraZ); 
-            eulerRotation: Qt.vector3d(window.cameraPitch, 0, 0) 
+            position: Qt.vector3d(window.cameraX, window.cameraY, window.cameraZ); 
+            eulerRotation: Qt.vector3d(window.cameraPitch, window.cameraYaw, 0) 
             
-            Behavior on position { Vector3dAnimation { duration: 1000; easing.type: Easing.InOutQuad } }
-            Behavior on eulerRotation { Vector3dAnimation { duration: 1000; easing.type: Easing.InOutQuad } }
+            // Manual overrides move immediately, automated shots use the ParallelAnimation above
         }
         
         Node {
+            id: carRotationNode
             eulerRotation: Qt.vector3d(0, window.carRotationZ, 0)
-            Behavior on eulerRotation { 
-                enabled: window.showModeActive
-                Vector3dAnimation { duration: 1000; easing.type: Easing.InOutQuad } 
-            }
             
             Node {
                 position: Qt.vector3d(0, 0, 0)
@@ -374,32 +468,39 @@ Window {
     Rectangle {
         id: controlPanel
         anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter; anchors.margins: 20
-        width: 100; height: 620; color: "#66000000"; radius: 15; border.color: "#33ffffff"; z: 200
+        width: 100; height: window.showModeActive ? 130 : 620
+        color: "#66000000"; radius: 15; border.color: "#33ffffff"; z: 200
+        clip: true
         
+        Behavior on height { NumberAnimation { duration: 500; easing.type: Easing.InOutQuad } }
+
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 15
             Column {
                 width: parent.width; spacing: 8
+                
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: window.envBrightness > 0.5 ? "\u2600" : "\u263E" 
                     font.pixelSize: 24; width: 70; height: 50
+                    visible: !window.showModeActive
                     onClicked: window.envBrightness = (window.envBrightness > 0.5 ? 0.4 : 1.0)
+                }
+                Button {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "\u21BA" // Reset icon
+                    font.pixelSize: 24; width: 70; height: 50
+                    visible: !window.showModeActive
+                    onClicked: { 
+                        window.showModeActive = false
+                        window.carRotationZ = 315; window.cameraZ = 2200; window.cameraY = 400; window.cameraX = 0; window.cameraPitch = -15; window.cameraYaw = 0; window.envBrightness = 1.0 
+                    }
                 }
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: window.visibility === Window.FullScreen ? "\u25A3" : "\u26F6" 
                     font.pixelSize: 24; width: 70; height: 50
                     onClicked: window.visibility = (window.visibility === Window.FullScreen) ? Window.Windowed : Window.FullScreen
-                }
-                Button {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: "\u21BA" // Reset icon
-                    font.pixelSize: 24; width: 70; height: 50
-                    onClicked: { 
-                        window.showModeActive = false
-                        window.carRotationZ = 315; window.cameraZ = 2000; window.cameraY = 400; window.cameraPitch = -15; window.envBrightness = 1.0 
-                    }
                 }
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -410,10 +511,10 @@ Window {
                 }
             }
 
-            Rectangle { width: parent.width - 20; height: 1; color: "#33ffffff"; anchors.horizontalCenter: parent.horizontalCenter }
+            Rectangle { width: parent.width - 20; height: 1; color: "#33ffffff"; anchors.horizontalCenter: parent.horizontalCenter; visible: !window.showModeActive }
 
             Column {
-                width: parent.width; spacing: 8
+                width: parent.width; spacing: 8; visible: !window.showModeActive
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Model S"
@@ -432,10 +533,10 @@ Window {
                 }
             }
 
-            Rectangle { width: parent.width - 20; height: 1; color: "#33ffffff"; anchors.horizontalCenter: parent.horizontalCenter }
+            Rectangle { width: parent.width - 20; height: 1; color: "#33ffffff"; anchors.horizontalCenter: parent.horizontalCenter; visible: !window.showModeActive }
 
             Column {
-                width: parent.width; spacing: 10
+                width: parent.width; spacing: 10; visible: !window.showModeActive
                 Column {
                     width: parent.width; spacing: 2
                     Text { text: "ROT"; color: "white"; font.pixelSize: 10; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
@@ -464,15 +565,20 @@ Window {
     Rectangle {
         id: playbackPanel
         anchors.bottom: parent.bottom; anchors.horizontalCenter: parent.horizontalCenter; anchors.margins: 20
-        width: 900; height: 100; color: "#66000000"; radius: 15; border.color: "#33ffffff"; z: 230
+        width: window.showModeActive ? 400 : 900; height: window.showModeActive ? 75 : 100
+        color: "#66000000"; radius: 15; border.color: "#33ffffff"; z: 230
+        clip: true
         
+        Behavior on width { NumberAnimation { duration: 500; easing.type: Easing.InOutQuad } }
+        Behavior on height { NumberAnimation { duration: 500; easing.type: Easing.InOutQuad } }
+
         Column {
-            anchors.centerIn: parent; spacing: 8
+            anchors.centerIn: parent; spacing: window.showModeActive ? 4 : 8
             Row {
                 anchors.horizontalCenter: parent.horizontalCenter; spacing: 15
                 Button { 
                     text: sync.playing ? "\u23F8" : "\u25B6"
-                    font.pixelSize: 20; width: 60; height: 45
+                    font.pixelSize: 20; width: 60; height: window.showModeActive ? 32 : 45
                     enabled: sync.showName !== "" && countdownValue <= 0
                     onClicked: { 
                         if (sync.playing) sync.pause(); 
@@ -484,17 +590,22 @@ Window {
                 Button { 
                     text: "\u25A0"
                     font.pixelSize: 20; width: 60; height: 45
-                    enabled: sync.showName !== ""
+                    enabled: sync.showName !== "" && !window.showModeActive
+                    visible: !window.showModeActive
                     onClicked: { sync.stop(); sync.position = 0; keyboardHandler.forceActiveFocus() }
                 }
-                Button { text: "Load Show"; height: 45; width: 120; onClicked: { fileDialog.open(); keyboardHandler.forceActiveFocus() } }
+                Button { 
+                    text: "Load Show"; height: 45; width: 120; 
+                    visible: !window.showModeActive
+                    onClicked: { fileDialog.open(); keyboardHandler.forceActiveFocus() } 
+                }
                 
-                Rectangle { width: 1; height: 35; color: "#33ffffff"; anchors.verticalCenter: parent.verticalCenter }
+                Rectangle { width: 1; height: 35; color: "#33ffffff"; anchors.verticalCenter: parent.verticalCenter; visible: !window.showModeActive }
 
                 CheckBox {
                     id: autoloadCheck
                     text: "Autoload previous"
-                    height: 45
+                    height: 45; visible: !window.showModeActive
                     checked: appSettings.autoloadShow
                     onToggled: appSettings.autoloadShow = checked
                     indicator: Rectangle {
@@ -510,9 +621,15 @@ Window {
             }
             Row {
                 spacing: 15; anchors.horizontalCenter: parent.horizontalCenter
-                Text { text: formatTime(sync.position); color: "white"; font.family: "Monospace"; font.pixelSize: 16; anchors.verticalCenter: parent.verticalCenter; opacity: sync.showName !== "" ? 1.0 : 0.3 }
-                Slider { id: progressSlider; width: 650; from: 0; to: sync.duration; value: sync.position; onMoved: sync.position = value; enabled: sync.showName !== "" }
-                Text { text: formatTime(sync.duration); color: "white"; font.family: "Monospace"; font.pixelSize: 16; anchors.verticalCenter: parent.verticalCenter; opacity: sync.showName !== "" ? 1.0 : 0.3 }
+                Text { text: formatTime(sync.position); color: "white"; font.family: "Monospace"; font.pixelSize: 14; anchors.verticalCenter: parent.verticalCenter; opacity: sync.showName !== "" ? 1.0 : 0.3 }
+                Slider { 
+                    id: progressSlider; width: window.showModeActive ? 250 : 650; from: 0; to: sync.duration; value: sync.position; 
+                    onMoved: sync.position = value; 
+                    enabled: sync.showName !== "" && !window.showModeActive
+                    opacity: window.showModeActive ? 0.5 : 1.0
+                    Behavior on width { NumberAnimation { duration: 500; easing.type: Easing.InOutQuad } }
+                }
+                Text { text: formatTime(sync.duration); color: "white"; font.family: "Monospace"; font.pixelSize: 14; anchors.verticalCenter: parent.verticalCenter; opacity: sync.showName !== "" ? 1.0 : 0.3 }
             }
         }
     }
