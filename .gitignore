@@ -21,3 +21,4 @@ build-*/
 tesla-lightshow-visualizer
 qml.qrc.cpp
 visualizer_run.log
+qml/cars/*/meshes/*.mesh
