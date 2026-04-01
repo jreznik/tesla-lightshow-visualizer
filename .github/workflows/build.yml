@@ -7,16 +7,48 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-jobs:
-  build:
+  build-linux:
+    name: Build Flatpak (Linux)
+    runs-on: ubuntu-latest
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:kde-6.8
+      options: --privileged
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download and Extract Raw Assets
+        shell: bash
+        run: |
+          mkdir -p assets
+          curl -L -o assets.zip "https://github.com/teslamotors/light-show/blob/master/xlights/tesla_xlights_show_folder.zip?raw=true"
+          unzip -j assets.zip "tesla_xlights_show_folder/Model_S/ModelS.obj" -d assets/
+          unzip -j assets.zip "tesla_xlights_show_folder/Model_S/ModelS.mtl" -d assets/
+          unzip -j assets.zip "tesla_xlights_show_folder/Cybertruck/Cybertruck.obj" -d assets/
+          unzip -j assets.zip "tesla_xlights_show_folder/Cybertruck/Cybertruck.mtl" -d assets/
+          rm assets.zip
+
+      - name: Build Flatpak
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: TeslaLightshowVisualizer.flatpak
+          manifest: org.jreznik.TeslaLightshowVisualizer.yaml
+          cache: true
+          branch: main
+
+      - name: Upload Flatpak Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: TeslaVisualizer-Flatpak
+          path: TeslaLightshowVisualizer.flatpak
+
+  build-desktop:
     name: Build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [macos-latest, windows-latest]
         include:
-          - os: ubuntu-latest
-            qt_arch: gcc_64
           - os: macos-latest
             qt_arch: clang_64
           - os: windows-latest
@@ -29,7 +61,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.8.2'
+          version: '6.7.2' # Using 6.7.2 which has stable index data
           arch: ${{ matrix.qt_arch }}
           modules: 'qtmultimedia qtquick3d qtshadertools'
 
@@ -60,7 +92,6 @@ jobs:
           mkdir -p qml/cars/ModelS/meshes qml/cars/Cybertruck/meshes
           balsam -o qml/cars/ModelS assets/ModelS_patched.obj
           balsam -o qml/cars/Cybertruck assets/Cybertruck_patched.obj
-          # Balsam puts files in 'meshes' subfolder by default
           cp qml/cars/ModelS/meshes/*.mesh qml/cars/ModelS/meshes/ || true
           cp qml/cars/Cybertruck/meshes/*.mesh qml/cars/Cybertruck/meshes/ || true
 
@@ -79,7 +110,7 @@ jobs:
           mkdir build
           cd build
           qmake6 ..
-          make -j$(nproc || sysctl -n hw.ncpu)
+          make -j$(sysctl -n hw.ncpu)
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
