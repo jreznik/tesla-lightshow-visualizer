@@ -12,7 +12,7 @@ jobs:
     name: Build Flatpak (Linux)
     runs-on: ubuntu-latest
     container:
-      image: bilelmoussaoui/flatpak-github-actions:kde-6.8
+      image: ghcr.io/flatpak/flatpak-builder:latest
       options: --privileged
     steps:
       - name: Checkout code
