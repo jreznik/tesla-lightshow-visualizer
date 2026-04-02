@@ -97,7 +97,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           # macdeployqt bundles frameworks into the .app
-          macdeployqt build/tesla-lightshow-visualizer.app -always-overwrite -verbose=1 -qmldir qml
+          macdeployqt build/tesla-lightshow-visualizer.app -always-overwrite -verbose=1 -qmldir=qml
           # Create DMG
           macdeployqt build/tesla-lightshow-visualizer.app -dmg
 
