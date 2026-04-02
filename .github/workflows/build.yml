@@ -26,17 +26,6 @@ jobs:
           flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
           flatpak install --user -y flathub org.kde.Sdk//6.8 org.kde.Platform//6.8
 
-      - name: Download and Extract Raw Assets
-        shell: bash
-        run: |
-          mkdir -p assets
-          curl -L -o assets.zip "https://github.com/teslamotors/light-show/blob/master/xlights/tesla_xlights_show_folder.zip?raw=true"
-          unzip -jo assets.zip "tesla_xlights_show_folder/Model_S/ModelS.obj" -d assets/
-          unzip -jo assets.zip "tesla_xlights_show_folder/Model_S/ModelS.mtl" -d assets/
-          unzip -jo assets.zip "tesla_xlights_show_folder/Cybertruck/Cybertruck.obj" -d assets/
-          unzip -jo assets.zip "tesla_xlights_show_folder/Cybertruck/Cybertruck.mtl" -d assets/
-          rm assets.zip
-
       - name: Build Flatpak
         run: |
           # Use flatpak-builder directly with --user to ensure it uses the locally installed SDK
@@ -71,36 +60,6 @@ jobs:
           version: '6.7.2'
           arch: ${{ matrix.qt_arch }}
           modules: 'qtmultimedia qtquick3d qtshadertools'
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
-      - name: Download and Extract Raw Assets
-        shell: bash
-        run: |
-          mkdir -p assets
-          curl -L -o assets.zip "https://github.com/teslamotors/light-show/blob/master/xlights/tesla_xlights_show_folder.zip?raw=true"
-          unzip -jo assets.zip "tesla_xlights_show_folder/Model_S/ModelS.obj" -d assets/
-          unzip -jo assets.zip "tesla_xlights_show_folder/Model_S/ModelS.mtl" -d assets/
-          unzip -jo assets.zip "tesla_xlights_show_folder/Cybertruck/Cybertruck.obj" -d assets/
-          unzip -jo assets.zip "tesla_xlights_show_folder/Cybertruck/Cybertruck.mtl" -d assets/
-          rm assets.zip
-
-      - name: Patch Models
-        run: |
-          python3 tools/patch_obj.py
-          python3 tools/patch_ct.py
-
-      - name: Convert to Meshes (Balsam)
-        shell: bash
-        run: |
-          mkdir -p qml/cars/ModelS/meshes qml/cars/Cybertruck/meshes
-          balsam -o qml/cars/ModelS assets/ModelS_patched.obj
-          balsam -o qml/cars/Cybertruck assets/Cybertruck_patched.obj
-          cp qml/cars/ModelS/meshes/*.mesh qml/cars/ModelS/meshes/ || true
-          cp qml/cars/Cybertruck/meshes/*.mesh qml/cars/Cybertruck/meshes/ || true
 
       - name: Build (Windows)
         if: matrix.os == 'windows-latest'

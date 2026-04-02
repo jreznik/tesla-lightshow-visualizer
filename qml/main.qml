@@ -97,6 +97,9 @@ Window {
         let variance = energyLevel * 300  // Some variance
         shotTransitionGroup.duration = baseDuration + (Math.random() - 0.5) * variance
 
+        // Scaling factor for Cybertruck (larger footprint)
+        let zoomFactor = (window.carType === "Cybertruck" ? 1.25 : 1.0)
+
         // Use faster easing for high energy
         if (energyLevel > 0.5) {
             shotTransitionX.easing.type = Easing.OutQuad
@@ -121,7 +124,8 @@ Window {
         }
 
         // Apply targets
-        shotTransitionY.to = shot.y; shotTransitionZ.to = shot.zoom
+        shotTransitionY.to = shot.y * (window.carType === "Cybertruck" ? 1.15 : 1.0); 
+        shotTransitionZ.to = shot.zoom * zoomFactor
         driftTimer.targetY = shot.y  // Update drift target
 
         // More rotation variation at high energy for dynamic feel

@@ -131,21 +131,21 @@ Node {
             Node {
                 id: mirrorLNode
                 position: Qt.vector3d(215, 120, -90) // Pivot at door attachment
-                eulerRotation: Qt.vector3d(0, getVal(35) * 15, 0)
+                eulerRotation: Qt.vector3d(0, getVal(35) * 60, 0)
                 Model {
                     source: "meshes/ct_Mirror_L_mesh.mesh"
-                    position: Qt.vector3d(-215, -120, 90) // Re-center
-                    materials: [ mat_Glass ] // Using glass material
+                    position: Qt.vector3d(-215, -120, 90) // Offset to rotate around pivot
+                    materials: [ mat_Glass ]
                     castsShadows: true
                 }
             }
             Node {
                 id: mirrorRNode
                 position: Qt.vector3d(215, 120, 90) // Pivot at door attachment
-                eulerRotation: Qt.vector3d(0, getVal(36) * -15, 0)
+                eulerRotation: Qt.vector3d(0, getVal(36) * -60, 0)
                 Model {
                     source: "meshes/ct_Mirror_R_mesh.mesh"
-                    position: Qt.vector3d(-215, -120, -90) // Re-center
+                    position: Qt.vector3d(-215, -120, -90) // Offset to rotate around pivot
                     materials: [ mat_Glass ]
                     castsShadows: true
                 }
