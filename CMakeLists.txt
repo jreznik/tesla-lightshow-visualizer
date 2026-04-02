@@ -20,6 +20,8 @@ qt_add_executable(tesla-lightshow-visualizer
     src/lightshow_sync.h src/lightshow_sync.cpp
 )
 
+# QML Module definition
+# Matches the QRC prefix: /qt/qml/tesla-lightshow-visualizer
 qt_add_qml_module(tesla-lightshow-visualizer
     URI Tesla.Lightshow
     VERSION 1.0
@@ -81,7 +83,13 @@ qt_add_qml_module(tesla-lightshow-visualizer
         meshes/Cybertruck/ct_Rear_Bar_mesh.mesh
 )
 
-# Target properties
+# Set base directories for QML files to strip the 'qml/' prefix in resources
+# This ensures qml/main.qml is accessible as qrc:/qt/qml/tesla-lightshow-visualizer/main.qml
+set_target_properties(tesla-lightshow-visualizer PROPERTIES
+    QT_QML_MODULE_RESOURCE_PATH "/qt/qml/tesla-lightshow-visualizer"
+)
+
+# Target links
 target_link_libraries(tesla-lightshow-visualizer PRIVATE 
     Qt6::Quick 
     Qt6::Quick3D 
@@ -92,9 +100,7 @@ target_link_libraries(tesla-lightshow-visualizer PRIVATE
 if(WIN32)
     set_target_properties(tesla-lightshow-visualizer PROPERTIES
         WIN32_EXECUTABLE ON
-        MACOSX_BUNDLE OFF
     )
-    # Icon for Windows
     set(app_icon_resource "${CMAKE_CURRENT_SOURCE_DIR}/assets/icon.ico")
     target_sources(tesla-lightshow-visualizer PRIVATE "${app_icon_resource}")
 elseif(APPLE)
@@ -103,14 +109,28 @@ elseif(APPLE)
         MACOSX_BUNDLE_BUNDLE_NAME "Tesla Visualizer"
         MACOSX_BUNDLE_ICON_FILE "icon.svg"
     )
-    set(MACOSX_BUNDLE_ICON_FILE "icon.svg")
     set(app_icon_resource "${CMAKE_CURRENT_SOURCE_DIR}/assets/icon.svg")
     set_source_files_properties(${app_icon_resource} PROPERTIES MACOSX_BUNDLE_LOCATION "Resources")
     target_sources(tesla-lightshow-visualizer PRIVATE "${app_icon_resource}")
 endif()
 
-# Installation logic (optional for CI, but good practice)
+include(GNUInstallDirs)
+
+# Install executable
 install(TARGETS tesla-lightshow-visualizer
     BUNDLE DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+# Install Linux desktop files
+if(UNIX AND NOT APPLE)
+    install(FILES org.jreznik.TeslaLightshowVisualizer.desktop
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/applications
+    )
+    install(FILES assets/org.jreznik.TeslaLightshowVisualizer.svg
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps
+    )
+    install(FILES org.jreznik.TeslaLightshowVisualizer.metainfo.xml
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo
+    )
+endif()

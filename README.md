@@ -45,13 +45,15 @@ For detailed information on how these meshes were processed, patched, and conver
 
 ### 1. Requirements
 - Qt 6.8+ (LTS) or 6.9+ (with Quick 3D, Multimedia, and Shader Tools modules)
+- CMake 3.16+
+- Ninja (recommended)
 
 ### 2. Build
 
 #### **Linux (Native)**
 ```bash
-qmake6
-make -j$(nproc)
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build
 ```
 
 #### **Linux (Flatpak)**
@@ -61,25 +63,23 @@ flatpak run org.jreznik.TeslaLightshowVisualizer
 ```
 
 #### **macOS**
-1. Install Qt 6 via Homebrew: `brew install qt6`
+1. Install Qt 6 and CMake via Homebrew: `brew install qt6 cmake ninja`
 2. Open terminal in the project root:
    ```bash
-   qmake6
-   make
+   cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+   cmake --build build
    ```
-3. Run the generated app bundle: `open tesla-lightshow-visualizer.app`
+3. Run the generated app bundle: `open build/tesla-lightshow-visualizer.app`
 
 #### **Windows (Native)**
-1. Install **Qt 6.8+ or 6.9+** using the Qt Online Installer (include **MSVC** or **MinGW** compiler).
-2. Open the **"Qt 6.x (MSVC/MinGW) Command Prompt"** from the Start Menu.
+1. Install **Qt 6.8+ or 6.9+** using the Qt Online Installer (include **MSVC** compiler).
+2. Open the **"x64 Native Tools Command Prompt for VS 2022"** from the Start Menu.
 3. Run:
    ```cmd
-   qmake
-   nmake   :: If using MSVC
-   :: OR
-   mingw32-make  :: If using MinGW
+   cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+   cmake --build build
    ```
-4. Run `tesla-lightshow-visualizer.exe`.
+4. Run `build\tesla-lightshow-visualizer.exe`.
 
 #### **Windows (Cross-compile from Fedora)**
 If you are on Fedora Linux, you can easily cross-compile for Windows:

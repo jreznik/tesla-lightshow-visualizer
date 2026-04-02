@@ -13,11 +13,7 @@ finish-args:
   - --filesystem=home
 modules:
   - name: tesla-lightshow-visualizer
-    buildsystem: simple
-    build-commands:
-      - /usr/bin/qmake6 PREFIX=/app
-      - make -j$FLATPAK_BUILDER_NPROC
-      - make install INSTALL_ROOT=/
+    buildsystem: cmake-ninja
     sources:
       - type: dir
         path: .
