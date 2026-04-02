@@ -71,7 +71,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          qmake ..
+          %Qt6_DIR%\bin\qmake.exe ..
           nmake
 
       - name: Build (Unix)
