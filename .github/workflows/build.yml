@@ -67,20 +67,15 @@ jobs:
 
       - name: Build (Windows)
         if: matrix.os == 'windows-latest'
-        shell: cmd
         run: |
-          mkdir build
-          cd build
-          qmake ..
-          nmake
+          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --config Release
 
       - name: Build (Unix)
         if: matrix.os != 'windows-latest'
         run: |
-          mkdir build
-          cd build
-          qmake6 ..
-          make -j$(sysctl -n hw.ncpu)
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --config Release
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
