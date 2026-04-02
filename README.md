@@ -44,7 +44,7 @@ For detailed information on how these meshes were processed, patched, and conver
 ## Build Instructions
 
 ### 1. Requirements
-- Qt 6.8+ (with Quick 3D, Multimedia, and Shader Tools modules)
+- Qt 6.8+ (LTS) or 6.9+ (with Quick 3D, Multimedia, and Shader Tools modules)
 
 ### 2. Build
 
@@ -70,7 +70,7 @@ flatpak run org.jreznik.TeslaLightshowVisualizer
 3. Run the generated app bundle: `open tesla-lightshow-visualizer.app`
 
 #### **Windows (Native)**
-1. Install **Qt 6.8+** using the Qt Online Installer (include **MSVC** or **MinGW** compiler).
+1. Install **Qt 6.8+ or 6.9+** using the Qt Online Installer (include **MSVC** or **MinGW** compiler).
 2. Open the **"Qt 6.x (MSVC/MinGW) Command Prompt"** from the Start Menu.
 3. Run:
    ```cmd
