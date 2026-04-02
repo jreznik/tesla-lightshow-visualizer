@@ -40,6 +40,8 @@
         <file alias="cars/ModelS/meshes/rear_Brake_R_mesh.mesh">meshes/ModelS/rear_Brake_R_mesh.mesh</file>
         <file alias="cars/ModelS/meshes/rear_Tail_L_mesh.mesh">meshes/ModelS/rear_Tail_L_mesh.mesh</file>
         <file alias="cars/ModelS/meshes/rear_Tail_R_mesh.mesh">meshes/ModelS/rear_Tail_R_mesh.mesh</file>
+        <file alias="cars/ModelS/meshes/rear_Other_L_mesh.mesh">meshes/ModelS/rear_Other_L_mesh.mesh</file>
+        <file alias="cars/ModelS/meshes/rear_Other_R_mesh.mesh">meshes/ModelS/rear_Other_R_mesh.mesh</file>
         <file alias="cars/ModelS/meshes/side_Repeater_L_mesh.mesh">meshes/ModelS/side_Repeater_L_mesh.mesh</file>
         <file alias="cars/ModelS/meshes/side_Repeater_R_mesh.mesh">meshes/ModelS/side_Repeater_R_mesh.mesh</file>
 
