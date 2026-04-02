@@ -67,9 +67,25 @@ jobs:
 
       - name: Build (Windows)
         if: matrix.os == 'windows-latest'
+        shell: cmd
         run: |
           cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
           cmake --build build --config Release
+
+      - name: Deploy (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          mkdir deploy
+          cp build/tesla-lightshow-visualizer.exe deploy/
+          # --qmldir . is important to pull in QML dependencies
+          windeployqt --release --compiler-runtime --no-translations --qmldir qml deploy/tesla-lightshow-visualizer.exe
+
+      - name: Package (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path deploy/* -DestinationPath tesla-lightshow-visualizer-windows.zip
 
       - name: Build (Unix)
         if: matrix.os != 'windows-latest'
@@ -82,6 +98,6 @@ jobs:
         with:
           name: TeslaVisualizer-${{ matrix.os }}
           path: |
+            tesla-lightshow-visualizer-windows.zip
             build/tesla-lightshow-visualizer
-            build/tesla-lightshow-visualizer.exe
             build/tesla-lightshow-visualizer.app
