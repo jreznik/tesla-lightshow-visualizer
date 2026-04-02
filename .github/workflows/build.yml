@@ -24,7 +24,7 @@ jobs:
         run: |
           # Setup a local user-mode flatpak environment to avoid permission issues
           flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-          flatpak install --user -y flathub org.kde.Sdk//6.8 org.kde.Platform//6.8
+          flatpak install --user -y flathub org.kde.Sdk//6.9 org.kde.Platform//6.9
 
       - name: Build Flatpak
         run: |
