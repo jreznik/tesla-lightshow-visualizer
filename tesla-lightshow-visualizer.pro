@@ -14,8 +14,6 @@ HEADERS += \
 RESOURCES += \
     qml.qrc
 
-win32-msvc: isEmpty(QMAKE_MSC_VER): QMAKE_MSC_VER = 1940
-
 win32: RC_ICONS = assets/icon.ico
 macx: ICON = assets/icon.svg
 macx: QMAKE_CXXFLAGS += -Wno-error=implicit-function-declaration
