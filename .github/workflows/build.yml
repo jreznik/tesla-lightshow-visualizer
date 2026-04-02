@@ -100,8 +100,6 @@ jobs:
           macdeployqt build/tesla-lightshow-visualizer.app -always-overwrite -verbose=1 -qmldir qml
           # Create DMG
           macdeployqt build/tesla-lightshow-visualizer.app -dmg
-          # Create ZIP using ditto to preserve permissions
-          ditto -c -k --sequesterRsrc --keepParent build/tesla-lightshow-visualizer.app tesla-lightshow-visualizer-macos.zip
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -109,6 +107,5 @@ jobs:
           name: TeslaVisualizer-${{ matrix.os }}
           path: |
             tesla-lightshow-visualizer-windows.zip
-            tesla-lightshow-visualizer-macos.zip
             build/*.dmg
             build/tesla-lightshow-visualizer
